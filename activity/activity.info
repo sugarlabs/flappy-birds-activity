@@ -1,0 +1,8 @@
+[Activity]
+name = Sonic Jump
+activity_version = 3
+bundle_id = org.sugarlabs.sonicjump
+icon = sonic
+exec = sugar-activity activity.Activity
+license = GPLv3
+summary = An arcade game
