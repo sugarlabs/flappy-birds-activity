@@ -156,6 +156,10 @@ class game:
         
         birds=bird()
         
+        keyinit=0
+        keytest=0
+        
+        
         
         # GAME LOOP BEGINS !!!
         
@@ -197,7 +201,7 @@ class game:
             
             
             
-            
+            # Platform blit
             gameDisplay.blit(land1,(land1x,600))
             gameDisplay.blit(land2,(land2x,600))
             
@@ -213,18 +217,21 @@ class game:
             
             
             if(keyinit==1):
-                birds.jump()
+                birds.jump(land1,land2)
             
             
-            if event.type==pygame.KEYDOWN and event.key==273 and keyinit==0:
+            if event.type==pygame.KEYDOWN and event.key==273 and keytest==0:
                 
-                keyinit=1
+                keyinit=keytest=1
+                birds.t=0
+                birds.angle=0
+                #birds.u=birds.v
                 
                
                             
             if event.type==pygame.KEYUP  and event.key==273 :
-                keyinit=0
                 
+                keytest=0
                 
             
             
