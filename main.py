@@ -154,6 +154,9 @@ class game:
         pillarlist.append(a)
         
         
+        birds=bird()
+        
+        
         # GAME LOOP BEGINS !!!
         
         while not crashed:
@@ -185,6 +188,8 @@ class game:
             gameDisplay.blit(sky,(350,400))
             
             
+            
+            # Pillar Display
             for i in pillarlist:
                 i.display(gameDisplay,pillarlist)
             
@@ -207,6 +212,32 @@ class game:
             
             
             
+            if(keyinit==1):
+                birds.jump()
+            
+            
+            if event.type==pygame.KEYDOWN and event.key==273 and keyinit==0:
+                
+                keyinit=1
+                
+               
+                            
+            if event.type==pygame.KEYUP  and event.key==273 :
+                keyinit=0
+                
+                
+            
+            
+            
+            
+            # bird display
+            
+            birds.display(gameDisplay)
+            
+            
+            
+            
+            
             
             
             
@@ -217,9 +248,9 @@ class game:
             pygame.draw.line(gameDisplay,black,(350,0),(350,768), 1)          
             pygame.draw.line(gameDisplay,black,(840,0),(840,768), 1)           
                       
-            #pygame.draw.rect(gameDisplay,black,(0,0,350,768))    
+            pygame.draw.rect(gameDisplay,black,(0,0,350,768))    
                     
-            #pygame.draw.rect(gameDisplay,black,(840,0,693,768))
+            pygame.draw.rect(gameDisplay,black,(840,0,693,768))
             
             
             

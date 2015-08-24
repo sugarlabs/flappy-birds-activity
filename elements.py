@@ -30,8 +30,51 @@ class pillar(object):
         gameDisplay.blit(self.pipedown,(self.x+2,self.y+self.height+self.gap+26))
     
         self.x-=2
-
+        
+        if(self.x==630):
+            pillarlist.append(pillar())
+        
         if(self.x<295):
             pillarlist.remove(self)
+            
+            
+class bird(object):
+    
+    a=9.8
+    t=0
+    
+    def __init__(self):
+        
+        self.x=400
+        self.y=400
+        
+        bird1=pygame.image.load("assets/bird/bird1.png").convert()
+       
+        bird2=pygame.image.load("assets/bird/bird2.png").convert()
+       
+        bird3=pygame.image.load("assets/bird/bird3.png").convert()
+       
+        bird4=pygame.image.load("assets/bird/bird4.png").convert()
+       
+        self.birdlist=[bird1,bird2,bird3,bird4]
+       
+       
+    def display(self,gameDisplay):
+            
+        gameDisplay.blit(self.birdlist[0],(self.x,self.y))
+        
+    '''    
+    def jump():
+        
+        t+=1
+        
+        v=10-a*(t/1000)
+        self.y-=v
+         
+    '''     
+         
+         
+        
+        
     
         
