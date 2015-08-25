@@ -14,14 +14,14 @@ class pillar(object):
         self.y=0   
         self.pillarup=pygame.image.load("assets/pipe-down.png").convert()
         self.pillardown=pygame.image.load("assets/pipe-up.png").convert()
-        self.height=randint(100,400)
+        self.height=randint(80,350)
         self.pipeup=pygame.transform.scale(pygame.image.load("assets/pipe.png").convert(),(52-4,self.height))
         self.pipedown=pygame.transform.scale(pygame.image.load("assets/pipe.png").convert(),(52-4,768-self.height))
   
         
         
         
-    def display(self,gameDisplay,pillarlist):
+    def display(self,gameDisplay,pillarlist,birds):
         
         gameDisplay.blit(self.pipeup,(self.x+2, self.y))
         gameDisplay.blit(self.pillarup,(self.x,self.y+self.height))
@@ -31,11 +31,24 @@ class pillar(object):
     
         self.x-=3
         
-        if(self.x==630):
+        if(self.x==603):
             pillarlist.append(pillar())
         
         if(self.x<295):
             pillarlist.remove(self)
+            
+        
+        
+        #collision check
+        
+        '''
+        bird_rect=birds.bird.get_rect(center=(self.x+self.bird.get_width()/2,self.y+self.bird.get_height()/2))
+        pipe1_rect=self.pipeup
+        
+        '''
+            
+            
+            
             
             
 class bird(object):
@@ -48,8 +61,8 @@ class bird(object):
         self.x=400
         self.y=400
         self.t=0
-        self.a=9.8
-        self.u=10
+        self.a=9.4
+        self.u=9.2
         self.v=10
         self.frame=0
         self.angle=0
@@ -75,12 +88,19 @@ class bird(object):
         
         
       
-    def jump(self,land1,land2):
+    def jump(self,land1,land2,land1x,land2x):
         
         self.t+=1
         
-        if(self.v>0):
-            self.angle+=1
+        #if(self.v==0)
+        
+        if(self.v>0 and self.t>0 and self.t<25 and self.angle<=30):
+            self.angle+=2
+            
+        if(self.t>25 and self.angle>-80):
+            self.angle-=2
+            
+           
         
         # motion equation v=u-at
         
@@ -89,13 +109,17 @@ class bird(object):
             
         self.y-=self.v
         
+        if(self.y<0):
+            self.y=0
+        
+        
         
         #bird platform fall check
         
-        bird_rect=self.bird.get_rect(center=(self.x+self.bird.get_width(),self.y+self.bird.get_height()))
+        bird_rect=self.bird.get_rect(center=(self.x+self.bird.get_width()/2,self.y+self.bird.get_height()/2))
         
-        platform_rect1=land1.get_rect(center=(land1.get_width(),land1.get_height()))
-        platform_rect2=land2.get_rect(center=(land2.get_width(),land2.get_height()))
+        platform_rect1=land1.get_rect(center=(land1x+land1.get_width()/2,600+land1.get_height()/2))
+        platform_rect2=land2.get_rect(center=(land2x+land2.get_width()/2,600+land2.get_height()/2))
         
         if (bird_rect.colliderect(platform_rect1)==True or \
             bird_rect.colliderect(platform_rect2)==True):

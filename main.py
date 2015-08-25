@@ -195,7 +195,7 @@ class game:
             
             # Pillar Display
             for i in pillarlist:
-                i.display(gameDisplay,pillarlist)
+                i.display(gameDisplay,pillarlist,birds)
             
             
             
@@ -205,26 +205,28 @@ class game:
             gameDisplay.blit(land1,(land1x,600))
             gameDisplay.blit(land2,(land2x,600))
             
-            land1x-=2
-            land2x-=2
+            land1x-=3
+            land2x-=3
             
             if(land1x<=-140):
-                land1x=840
+                land1x=837
                 
             if(land2x<=-140):
-                land2x=840
+                land2x=837
             
             
             
             if(keyinit==1):
-                birds.jump(land1,land2)
+                birds.jump(land1,land2,land1x,land2x)
             
             
             if event.type==pygame.KEYDOWN and event.key==273 and keytest==0:
                 
                 keyinit=keytest=1
+                if(birds.t>25):
+                    birds.angle=0
+                
                 birds.t=0
-                birds.angle=0
                 #birds.u=birds.v
                 
                
@@ -268,6 +270,9 @@ class game:
             if crashed==True:                                   # Game crash or Close check
                 pygame.quit()
                 sys.exit()
+     
+     
+     
      
      
      
