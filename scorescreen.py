@@ -37,7 +37,7 @@ from random import *
 
 
 
-
+'''
 
   
 pygame.init()
@@ -76,14 +76,14 @@ score=0
 
 
 
-
+'''
 
 
 
 
 class scorescreen:
 
-    def run(self,gameDisplay,score):
+    def run(self,gameDisplay,scores):
         
         pygame.init()
         sound=True
@@ -200,13 +200,13 @@ class scorescreen:
            
            
             
-            gameDisplay.blit(scoreboard,(420,150))
+            gameDisplay.blit(scoreboard,(420,100))
             
-            gameDisplay.blit(replay,(530,500))
+            gameDisplay.blit(replay,(530,450))
             
             
-            if replay.get_rect(center=(530+(replay.get_width()/2),500+(replay.get_height()/2))).collidepoint(mos_x,mos_y):
-                gameDisplay.blit(pygame.transform.scale(replay,(replay.get_width()+4,replay.get_height()+4)),(530-2,500-2))
+            if replay.get_rect(center=(530+(replay.get_width()/2),450+(replay.get_height()/2))).collidepoint(mos_x,mos_y):
+                gameDisplay.blit(pygame.transform.scale(replay,(replay.get_width()+4,replay.get_height()+4)),(530-2,450-2))
                 
                 if(pygame.mouse.get_pressed())[0]==1 and press==0:
                     
@@ -256,7 +256,7 @@ class scorescreen:
             pygame.quit()
             sys.exit()
 
-
+'''
 
 
 
@@ -266,3 +266,4 @@ if __name__ == "__main__":
     g.run(gameDisplay,score)         
 
 
+'''

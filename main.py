@@ -37,8 +37,10 @@ from elements import *
 
 from welcomescreen import *
 
+from scorescreen import *
 
 
+pygame.init()
 
 
 
@@ -51,7 +53,7 @@ class game:
   
     def initialize(self):
         
-        pygame.init()
+        
         sound=True
         
         try:
@@ -243,7 +245,7 @@ class game:
             
             
             if(self.keyinit==1):
-                self.birds.jump(land1,land2,self.land1x,self.land2x)
+                self.birds.jump(land1,land2,self.land1x,self.land2x,g)
             
             
             if event.type==pygame.KEYDOWN and event.key==273 and self.keytest==0:

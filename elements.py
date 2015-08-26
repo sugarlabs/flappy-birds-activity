@@ -4,6 +4,9 @@ import sys
 
 from random import *
 
+from scorescreen import *
+
+
 
 class pillar(object):
     
@@ -67,7 +70,16 @@ class pillar(object):
         if(bird_rect.colliderect(pipe1_rect) or bird_rect.colliderect(pipe2_rect) or \
             bird_rect.colliderect(pillar1_rect) or \
                 bird_rect.colliderect(pillar2_rect)):
-            sys.exit()
+            
+            
+            
+            b=scorescreen()
+            b.run(g.gameDisplay,g.scores)
+            g.initialize()
+            g.welcomeflag=1
+            
+            
+            return
                                        
                                        
         
@@ -147,7 +159,7 @@ class bird(object):
         
         
       
-    def jump(self,land1,land2,land1x,land2x):
+    def jump(self,land1,land2,land1x,land2x,g):
         
         self.t+=1
         
@@ -182,8 +194,15 @@ class bird(object):
         
         if (bird_rect.colliderect(platform_rect1)==True or \
             bird_rect.colliderect(platform_rect2)==True):
-            sys.exit()
-        
+            
+            
+            b=scorescreen()
+            b.run(g.gameDisplay,g.scores)
+            g.initialize()
+            g.welcomeflag=1
+            
+            
+            return
             
         
          
