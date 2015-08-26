@@ -224,6 +224,13 @@ class game:
             # Pillar Display
             for i in self.pillarlist:
                 i.display(self.gameDisplay,self.pillarlist,self.birds,g)
+                
+                
+                if(self.welcomeflag==1):
+                    a=welcomescreen()
+                    a.run(self.gameDisplay)
+                    self.welcomeflag=0
+                    self.keyinit=1
             
             
             
@@ -246,6 +253,12 @@ class game:
             
             if(self.keyinit==1):
                 self.birds.jump(land1,land2,self.land1x,self.land2x,g)
+            
+            if(self.welcomeflag==1):
+                a=welcomescreen()
+                a.run(self.gameDisplay)
+                self.welcomeflag=0
+                self.keyinit=1
             
             
             if event.type==pygame.KEYDOWN and event.key==273 and self.keytest==0:

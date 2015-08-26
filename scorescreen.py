@@ -37,8 +37,8 @@ from random import *
 
 
 
-'''
 
+'''
   
 pygame.init()
 sound=True
@@ -72,11 +72,10 @@ if not(gameDisplay):
 
 #back=pygame.image.load('background/back6.jpg')
 fruitscore=0
-score=0
-
-
+scores=10
 
 '''
+
 
 
 
@@ -96,6 +95,7 @@ class scorescreen:
             
         black=(0,0,0)
         white=(255,255,255)
+        red=(255,0,0)
         clock=pygame.time.Clock()
         timer=pygame.time.Clock()
             
@@ -142,23 +142,44 @@ class scorescreen:
         
         #font load
         
-        '''
+        
         font_path = "fonts/sans.ttf"
         font_size = 55
         font1= pygame.font.Font(font_path, font_size)
         font2=pygame.font.Font("fonts/sans.ttf",30)
         font3=pygame.font.Font("fonts/sans.ttf",30)
         font4=pygame.font.Font("fonts/sans.ttf",20)
-        '''
-       
-        '''
+        
+        
+        
+        #scores=20
+        
+        #Scores load
+        
+        
+        if os.path.getsize("score.pkl") == 0:
+            
+            with open('score.pkl', 'wb') as output:
+                pickle.dump(0, output, pickle.HIGHEST_PROTOCOL)
+        
         
         with open('score.pkl', 'rb') as input:    #REading
             maxscore = pickle.load(input)
-        '''    
+            
+            
+       
+        newflag=0
+        
+        if(scores>maxscore):
+            with open('score.pkl', 'wb') as output:
+                pickle.dump(scores, output, pickle.HIGHEST_PROTOCOL)
+                
+            maxscore=scores 
+            newflag=1
+            
         
         
-        buttonsound=pygame.mixer.Sound("sound/sound-button.ogg")
+        #buttonsound=pygame.mixer.Sound("sound/sound-button.ogg")
         
         
         
@@ -210,12 +231,31 @@ class scorescreen:
                 
                 if(pygame.mouse.get_pressed())[0]==1 and press==0:
                     
+                    b=scorescreen()
+                    b.run(g.gameDisplay,g.scores)
+                    g.initialize()
+                    g.welcomeflag=1
+            
+            
+                    return
                     
-                    return 1
+                    
+                    
+            
+            
+            #print scores
+            scoress=font2.render(str(scores),2,black)
+            
+            gameDisplay.blit(scoress,(630,265))
+            
+            if(newflag==1):
+                maxscores=font2.render(str(maxscore)+"  NEW!",2,red)
+            else:
+                maxscores=font2.render(str(maxscore),2,black)
             
             
             
-            
+            gameDisplay.blit(maxscores,(630,330))
                            
             
            
@@ -256,14 +296,12 @@ class scorescreen:
             pygame.quit()
             sys.exit()
 
+
 '''
-
-
 
 
 if __name__ == "__main__":
     g = scorescreen()
-    g.run(gameDisplay,score)         
-
+    g.run(gameDisplay,scores)         
 
 '''
