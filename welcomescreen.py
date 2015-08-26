@@ -148,14 +148,15 @@ class welcomescreen:
         
         #font load
         
-        '''
+        
         font_path = "fonts/sans.ttf"
         font_size = 55
         font1= pygame.font.Font(font_path, font_size)
-        font2=pygame.font.Font("fonts/sans.ttf",30)
+        font2=pygame.font.Font("fonts/sans.ttf",25)
         font3=pygame.font.Font("fonts/sans.ttf",30)
         font4=pygame.font.Font("fonts/sans.ttf",20)
-        '''
+        
+        flag=1
        
         '''
         
@@ -169,6 +170,10 @@ class welcomescreen:
         birds=bird()
         
         button=pygame.image.load("assets/button.png")
+        logo=pygame.image.load("assets/logo.png")
+        logo=pygame.transform.scale(logo,(280,80))
+            
+        
         
         
         
@@ -214,11 +219,29 @@ class welcomescreen:
                 land2x=837
             
             
-                           
-            birds.display(gameDisplay)
             
-            gameDisplay.blit(rules,(500,150))
-            gameDisplay.blit(button,(500,450))
+            #bird display
+            
+            birds.display(gameDisplay,flag)
+            
+            
+            
+            gameDisplay.blit(rules,(500,140))
+            gameDisplay.blit(button,(700,330))
+            
+            head3=font2.render("Use this button ->",1,(white))
+            gameDisplay.blit(head3,(480,320))
+            
+            head3=font2.render("to play the game",1,(white))
+            gameDisplay.blit(head3,(480,340))
+            
+            
+            
+            gameDisplay.blit(logo,(455,30))
+            
+            if event.type==pygame.KEYDOWN and event.key==273:
+                return
+            
             
            
            

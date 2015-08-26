@@ -42,16 +42,11 @@ from elements import *
 
 
 class game:
-  
+    
+    
+    
   
     def initialize(self):
-      
-        self.flag=0
-      
-    
-    
-    
-    def make(self):
         
         pygame.init()
         sound=True
@@ -62,6 +57,55 @@ class game:
             sound=False
             print 'error with sound', err
             
+        
+        
+        info=pygame.display.Info()
+        self.gameDisplay=pygame.display.get_surface()
+        
+        
+        
+        
+        
+        if not(self.gameDisplay):
+            
+            self.gameDisplay = pygame.display.set_mode((info.current_w,info.current_h))
+            
+            
+            pygame.display.set_caption("Flappy Birds")
+            #gameicon=pygame.image.load('images/icon.png')
+            #pygame.display.set_icon(gameicon)
+            
+            
+        
+        
+        
+      
+        self.flag=0
+        self.score=0
+        
+        self.land1x=350
+        self.land2x=840
+        
+        
+        self.pillarlist=[]
+        a=pillar()
+        self.pillarlist.append(a)
+        
+        
+        self.birds=bird()
+        
+        self.keyinit=0
+        self.keytest=0
+        
+        self.flag=0
+        
+    
+    
+    def make(self):
+        
+        
+        
+        
         black=(0,0,0)
         white=(255,255,255)
         clock=pygame.time.Clock()
@@ -73,20 +117,6 @@ class game:
             
         press=0    
         
-        info=pygame.display.Info()
-        gameDisplay=pygame.display.get_surface()
-        
-        
-        if not(gameDisplay):
-            
-            gameDisplay = pygame.display.set_mode((info.current_w,info.current_h))
-            
-            
-            pygame.display.set_caption("Flappy Birds")
-            #gameicon=pygame.image.load('images/icon.png')
-            #pygame.display.set_icon(gameicon)
-            
-            
         
         
         
@@ -145,19 +175,7 @@ class game:
         skyfill=pygame.transform.scale(skyfill,(490,500))
         
         
-        land1x=350
-        land2x=840
         
-        
-        pillarlist=[]
-        a=pillar()
-        pillarlist.append(a)
-        
-        
-        birds=bird()
-        
-        keyinit=0
-        keytest=0
         
         
         
@@ -185,55 +203,55 @@ class game:
             
             
             
-            gameDisplay.fill(white)
+            self.gameDisplay.fill(white)
             
             
-            gameDisplay.blit(skyfill,(350,0))
-            gameDisplay.blit(sky,(350,400))
+            self.gameDisplay.blit(skyfill,(350,0))
+            self.gameDisplay.blit(sky,(350,400))
             
             
             
             # Pillar Display
-            for i in pillarlist:
-                i.display(gameDisplay,pillarlist,birds)
+            for i in self.pillarlist:
+                i.display(self.gameDisplay,self.pillarlist,self.birds)
             
             
             
             
             
             # Platform blit
-            gameDisplay.blit(land1,(land1x,600))
-            gameDisplay.blit(land2,(land2x,600))
+            self.gameDisplay.blit(land1,(self.land1x,600))
+            self.gameDisplay.blit(land2,(self.land2x,600))
             
-            land1x-=3
-            land2x-=3
+            self.land1x-=3
+            self.land2x-=3
             
-            if(land1x<=-140):
-                land1x=837
+            if(self.land1x<=-140):
+                self.land1x=837
                 
-            if(land2x<=-140):
-                land2x=837
+            if(self.land2x<=-140):
+                self.land2x=837
             
             
             
-            if(keyinit==1):
-                birds.jump(land1,land2,land1x,land2x)
+            if(self.keyinit==1):
+                self.birds.jump(land1,land2,self.land1x,self.land2x)
             
             
-            if event.type==pygame.KEYDOWN and event.key==273 and keytest==0:
+            if event.type==pygame.KEYDOWN and event.key==273 and self.keytest==0:
                 
-                keyinit=keytest=1
-                if(birds.t>25):
-                    birds.angle=0
+                self.keyinit=keytest=1
+                if(self.birds.t>25):
+                    self.birds.angle=0
                 
-                birds.t=0
+                self.birds.t=0
                 #birds.u=birds.v
                 
                
                             
             if event.type==pygame.KEYUP  and event.key==273 :
                 
-                keytest=0
+                self.keytest=0
                 
             
             
@@ -241,7 +259,7 @@ class game:
             
             # bird display
             
-            birds.display(gameDisplay)
+            self.birds.display(self.gameDisplay,self.flag)
             
             
             
@@ -254,12 +272,12 @@ class game:
             
             # BLACK RECTANGLES DISPLAY
                       
-            pygame.draw.line(gameDisplay,black,(350,0),(350,768), 1)          
-            pygame.draw.line(gameDisplay,black,(840,0),(840,768), 1)           
+            pygame.draw.line(self.gameDisplay,black,(350,0),(350,768), 1)          
+            pygame.draw.line(self.gameDisplay,black,(840,0),(840,768), 1)           
                       
-            pygame.draw.rect(gameDisplay,black,(0,0,350,768))    
+            pygame.draw.rect(self.gameDisplay,black,(0,0,350,768))    
                     
-            pygame.draw.rect(gameDisplay,black,(840,0,693,768))
+            pygame.draw.rect(self.gameDisplay,black,(840,0,693,768))
             
             
             
@@ -290,6 +308,7 @@ class game:
 
 if __name__ == "__main__":
     g = game()
+    g.initialize()
     g.make()         
 
             

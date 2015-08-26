@@ -14,7 +14,7 @@ class pillar(object):
         self.y=0   
         self.pillarup=pygame.image.load("assets/pipe-down.png").convert()
         self.pillardown=pygame.image.load("assets/pipe-up.png").convert()
-        self.height=randint(80,350)
+        self.height=randint(60,300)
         self.pipeup=pygame.transform.scale(pygame.image.load("assets/pipe.png").convert(),(52-4,self.height))
         self.pipedown=pygame.transform.scale(pygame.image.load("assets/pipe.png").convert(),(52-4,768-self.height))
   
@@ -87,11 +87,13 @@ class bird(object):
         self.x=400
         self.y=400
         self.t=0
-        self.a=9.4
-        self.u=9.2
+        self.a=9.6
+        self.u=7.6
         self.v=10
         self.frame=0
         self.angle=0
+        self.count=0
+        self.up=True
         
         self.bird=bird1=pygame.image.load("assets/bird/bird1.png").convert()
        
@@ -104,13 +106,32 @@ class bird(object):
         self.birdlist=[bird1,bird2,bird3,bird4]
        
        
-    def display(self,gameDisplay):
+    def display(self,gameDisplay,flag):
         
         self.bird=pygame.transform.rotate(self.birdlist[int(self.frame/8)],self.angle)
         gameDisplay.blit(self.bird,(self.x,self.y))
         self.frame+=1
         if(int(self.frame/8)==4):
             self.frame=0
+            
+        if(flag==1):
+            
+            
+            
+            self.count+=1
+            if(self.count==25):
+                self.count=0
+                self.up=not self.up
+                
+            if(self.up==True):
+                self.y-=1
+                
+            else:
+                self.y+=1
+            
+                
+                
+            
         
         
       
@@ -120,7 +141,7 @@ class bird(object):
         
         #if(self.v==0)
         
-        if(self.v>0 and self.t>0 and self.t<25 and self.angle<=30):
+        if(self.v>0 and self.t>0 and self.t<25 and self.angle<=20):
             self.angle+=2
             
         if(self.t>25 and self.angle>-80):
