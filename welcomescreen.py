@@ -38,7 +38,7 @@ from elements import *
 
 
 
-
+'''
 
 
   
@@ -76,7 +76,7 @@ if not(gameDisplay):
 fruitscore=0
 score=0
 
-
+'''
 
 
 
@@ -85,7 +85,7 @@ score=0
 
 class welcomescreen:
 
-    def run(self,gameDisplay,score):
+    def run(self,gameDisplay):
         
         pygame.init()
         sound=True
@@ -189,9 +189,7 @@ class welcomescreen:
                 if event.type == pygame.QUIT:
                     crashed=True
                     
-                if event.type==pygame.KEYDOWN and event.key==273:
-                    return 1
-                    
+                
                 
             #print "help"
             mos_x,mos_y=pygame.mouse.get_pos() 
@@ -239,8 +237,11 @@ class welcomescreen:
             
             gameDisplay.blit(logo,(455,30))
             
-            if event.type==pygame.KEYDOWN and event.key==273:
-                return
+            
+            for event in pygame.event.get():
+                if event.type==pygame.KEYDOWN and event.key==273:
+                    #print "help"
+                    return
             
             
            
@@ -281,11 +282,11 @@ class welcomescreen:
 
 
 
-
+'''
 
 
 if __name__ == "__main__":
     g = welcomescreen()
     g.run(gameDisplay,score)         
 
-
+'''

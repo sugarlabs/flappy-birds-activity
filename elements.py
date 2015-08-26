@@ -21,7 +21,7 @@ class pillar(object):
         
         
         
-    def display(self,gameDisplay,pillarlist,birds):
+    def display(self,gameDisplay,pillarlist,birds,g):
         
         gameDisplay.blit(self.pipeup,(self.x+2, self.y))
         gameDisplay.blit(self.pillarup,(self.x,self.y+self.height))
@@ -70,6 +70,18 @@ class pillar(object):
             sys.exit()
                                        
                                        
+        
+        
+        
+        #scores increment
+        if(self.x==399):
+            g.scores+=1
+            #print "hello"
+            
+            
+        #print g.scores    
+            
+        
         
         
             

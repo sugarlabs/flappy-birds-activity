@@ -35,6 +35,8 @@ from random import *
 
 from elements import *
 
+from welcomescreen import *
+
 
 
 
@@ -44,6 +46,7 @@ from elements import *
 class game:
     
     
+        
     
   
     def initialize(self):
@@ -81,7 +84,7 @@ class game:
         
       
         self.flag=0
-        self.score=0
+        self.scores=0
         
         self.land1x=350
         self.land2x=840
@@ -98,7 +101,7 @@ class game:
         self.keytest=0
         
         self.flag=0
-        
+        self.welcomeflag=1
     
     
     def make(self):
@@ -196,7 +199,12 @@ class game:
             
             #print "hello"
             
-                
+            
+            if(self.welcomeflag==1):
+                a=welcomescreen()
+                a.run(self.gameDisplay)
+                self.welcomeflag=0
+                self.keyinit=1
             
             
                     
@@ -213,7 +221,7 @@ class game:
             
             # Pillar Display
             for i in self.pillarlist:
-                i.display(self.gameDisplay,self.pillarlist,self.birds)
+                i.display(self.gameDisplay,self.pillarlist,self.birds,g)
             
             
             
@@ -260,6 +268,15 @@ class game:
             # bird display
             
             self.birds.display(self.gameDisplay,self.flag)
+            
+            
+            head3=font3.render(str(self.scores),1,(white))
+            self.gameDisplay.blit(head3,(580,30))
+            
+            
+            #print self.scores
+            
+            
             
             
             
