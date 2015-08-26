@@ -43,6 +43,18 @@ from scorescreen import *
 pygame.init()
 
 
+sound=True
+        
+try:
+    pygame.mixer.init()
+except Exception, err:
+    sound=False
+    print 'error with sound', err
+
+wing=pygame.mixer.Sound("assets/sounds/wing.ogg")
+
+
+
 
 
 class game:
@@ -104,6 +116,7 @@ class game:
         
         self.flag=0
         self.welcomeflag=1
+        self.musicflag=False
     
     
     def make(self):
@@ -158,9 +171,11 @@ class game:
         
         # Sound loads
         
-        jumpsound=pygame.mixer.Sound("sound/sound-jump.ogg")
-        bumpsound=pygame.mixer.Sound("sound/sound-bump.ogg")
-        coinsound=pygame.mixer.Sound("sound/sound-coin.ogg")
+        hit=pygame.mixer.Sound("assets/sounds/hit.ogg")
+        wing=pygame.mixer.Sound("assets/sounds/wing.ogg")
+        point=pygame.mixer.Sound("assets/sounds/point.ogg")
+        swoosh=pygame.mixer.Sound("assets/sounds/swoosh.ogg")
+        die=pygame.mixer.Sound("assets/sounds/die.ogg")
         
         
         
@@ -261,8 +276,25 @@ class game:
                 self.keyinit=1
             
             
-            if event.type==pygame.KEYDOWN and event.key==273 and self.keytest==0:
+            
                 
+            
+            
+                #pygame.mixer.music.load("assets/sounds/wing.ogg")
+                #pygame.mixer.music.play(0,0)
+                #self.musicflag=not self.musicflag
+            
+            #print event
+            
+            if event.type==pygame.KEYDOWN and event.key==273 and self.keytest==0:
+                #print "hellp"
+                #self.musicflag=True
+                #pygame.mixer.music.fadeout(10)
+                
+                
+                
+                #wing.fadeout(5)
+                #wing.play(0)
                 self.keyinit=keytest=1
                 if(self.birds.t>25):
                     self.birds.angle=0
@@ -272,10 +304,18 @@ class game:
                 
                
                             
-            if event.type==pygame.KEYUP  and event.key==273 :
+            if event.type==pygame.KEYUP  and event.key==273 and self.musicflag==True:
                 
                 self.keytest=0
+                self.musicflag=False
                 
+            
+            
+            if self.musicflag==False and event.type==pygame.KEYDOWN  and event.key==273: 
+                pygame.mixer.music.load("assets/sounds/wing.ogg")
+                pygame.mixer.music.play(0,0)
+                self.musicflag=not self.musicflag
+            
             
             
             

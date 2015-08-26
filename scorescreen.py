@@ -38,45 +38,15 @@ from random import *
 
 
 
-'''
-  
-pygame.init()
 sound=True
         
 try:
     pygame.mixer.init()
 except Exception, err:
     sound=False
-    print 'error with sound', error
-            
-black=(0,0,0)
-white=(255,255,255)
-clock=pygame.time.Clock()
-timer=pygame.time.Clock()
-            
-crashed=False   
-disp_width = 600
-disp_height = 600
-            
-press=0    
-            
-gameDisplay=pygame.display.get_surface()
-        
-if not(gameDisplay):
-    info=pygame.display.Info()
-    gameDisplay = pygame.display.set_mode((info.current_w,info.current_h))
-            
-    #pygame.display.set_caption("Make Them Fall")
-    #gameicon=pygame.image.load('data/images/icon.png')
-    #pygame.display.set_icon(gameicon)
+    print 'error with sound', err
 
-#back=pygame.image.load('background/back6.jpg')
-fruitscore=0
-scores=10
-
-'''
-
-
+swoosh=pygame.mixer.Sound("assets/sounds/swoosh.ogg")
 
 
 
@@ -200,6 +170,7 @@ class scorescreen:
                     crashed=True
                     
                 if event.type==pygame.KEYDOWN and event.key==273:
+                    swoosh.play(0)
                     return 1
                     
                 
