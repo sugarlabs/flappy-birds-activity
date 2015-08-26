@@ -9,7 +9,7 @@ class pillar(object):
     
     
     def __init__(self):
-        self.gap=150
+        self.gap=160
         self.x=840
         self.y=0   
         self.pillarup=pygame.image.load("assets/pipe-down.png").convert()
@@ -41,11 +41,37 @@ class pillar(object):
         
         #collision check
         
-        '''
-        bird_rect=birds.bird.get_rect(center=(self.x+self.bird.get_width()/2,self.y+self.bird.get_height()/2))
-        pipe1_rect=self.pipeup
         
-        '''
+        bird_rect=birds.bird.get_rect(center=(birds.x+birds.bird.get_width()/2, \
+                                        
+                                            birds.y+birds.bird.get_height()/2))
+        
+        
+        
+        
+        pipe1_rect=self.pipeup.get_rect(center=(self.x+2+self.pipeup.get_width()/2, \
+                                               self.y+self.pipeup.get_height()/2))
+        
+        pillar1_rect=self.pillarup.get_rect(center=(self.x+self.pillarup.get_width()/2, \
+                                            self.y+self.height+self.pillarup.get_height()/2))
+        
+        
+        pillar2_rect=self.pillardown.get_rect(center=(self.x+self.pillardown.get_width()/2, \
+            self.y+self.height+self.gap+self.pillardown.get_height()/2))
+        
+        
+        pipe2_rect=self.pipedown.get_rect(center=(self.x+2+self.pipedown.get_width()/2, \
+                    self.y+self.height+self.gap+26+self.pipedown.get_height()/2))
+        
+        
+        if(bird_rect.colliderect(pipe1_rect) or bird_rect.colliderect(pipe2_rect) or \
+            bird_rect.colliderect(pillar1_rect) or \
+                bird_rect.colliderect(pillar2_rect)):
+            sys.exit()
+                                       
+                                       
+        
+        
             
             
             
