@@ -189,6 +189,10 @@ class welcomescreen:
                 if event.type == pygame.QUIT:
                     crashed=True
                     
+                if event.type==pygame.KEYDOWN and event.key==273:
+                    #print "help"
+                    return    
+                    
                 
                 
             #print "help"
@@ -238,10 +242,8 @@ class welcomescreen:
             gameDisplay.blit(logo,(455,30))
             
             
-            for event in pygame.event.get():
-                if event.type==pygame.KEYDOWN and event.key==273:
-                    #print "help"
-                    return
+            #for event in pygame.event.get():
+                
             
             
            
