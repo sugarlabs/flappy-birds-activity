@@ -87,7 +87,7 @@ class scorescreen:
         #image load    
         
         land=pygame.image.load("assets/land.png").convert()
-        land1=pygame.transform.scale(land,(490,120))
+        land1=pygame.transform.scale(land,(490,150))
         land2=land1
         
         sky=pygame.image.load("assets/sky.png").convert()

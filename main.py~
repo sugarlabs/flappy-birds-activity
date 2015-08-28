@@ -246,10 +246,8 @@ class game:
                     a.run(self.gameDisplay)
                     self.welcomeflag=0
                     self.keyinit=1
-                    
-                    break
-		    #pygame.display.update()
-            	    #clock.tick(60)
+		    pygame.display.update()
+            	    clock.tick(60)
             
             
             
@@ -278,9 +276,8 @@ class game:
                 a.run(self.gameDisplay)
                 self.welcomeflag=0
                 self.keyinit=1
-		continue
-		#pygame.display.update()
-            	#clock.tick(60)
+		pygame.display.update()
+            	clock.tick(60)
 		
             
             
