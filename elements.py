@@ -29,7 +29,7 @@ class pillar(object):
                 
     
     def __init__(self):
-        self.gap=160
+        self.gap=170
         self.x=840
         self.y=0   
         self.pillarup=pygame.image.load("assets/pipe-down.png").convert()
@@ -137,7 +137,7 @@ class bird(object):
         self.y=400
         self.t=0
         self.a=9.6
-        self.u=7.6
+        self.u=7.4
         self.v=10
         self.frame=0
         self.angle=0
