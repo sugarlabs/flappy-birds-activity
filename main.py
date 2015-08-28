@@ -303,7 +303,7 @@ class game:
                 
                 #wing.fadeout(5)
                 #wing.play(0)
-                self.keyinit=keytest=1
+                self.keyinit=self.keytest=1
                 if(self.birds.t>25):
                     self.birds.angle=0
                 
