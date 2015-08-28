@@ -109,8 +109,10 @@ class pillar(object):
             
             
             g.scores+=1
-            pygame.mixer.music.load("assets/sounds/point.ogg")
-            pygame.mixer.music.play(0,0)
+            
+            point.play(0)
+            #pygame.mixer.music.load("assets/sounds/point.ogg")
+            #pygame.mixer.music.play(0,0)
             #print "hello"
             
             
