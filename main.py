@@ -40,19 +40,6 @@ from welcomescreen import *
 from scorescreen import *
 
 
-pygame.init()
-
-
-sound=True
-        
-try:
-    pygame.mixer.init()
-except Exception, err:
-    sound=False
-    print 'error with sound', err
-
-wing=pygame.mixer.Sound("assets/sounds/wing.ogg")
-
 
 
 
@@ -60,56 +47,39 @@ wing=pygame.mixer.Sound("assets/sounds/wing.ogg")
 class game:
     
     
-        
-    
-  
-    def initialize(self):
-        
-        
-        sound=True
+    def __init__(self):
+      
+        pygame.init()
+        self.sound=True
         
         try:
             pygame.mixer.init()
         except Exception, err:
-            sound=False
+            self.sound=False
             print 'error with sound', err
             
         
         
-        info=pygame.display.Info()
+        self.info=pygame.display.Info()
+        
         self.gameDisplay=pygame.display.get_surface()
-        
-        
-        
-        
         
         if not(self.gameDisplay):
             
-            self.gameDisplay = pygame.display.set_mode((info.current_w,info.current_h))
+            self.gameDisplay = pygame.display.set_mode((self.info.current_w,self.info.current_h))
             
             
             pygame.display.set_caption("Flappy Birds")
             #gameicon=pygame.image.load('images/icon.png')
             #pygame.display.set_icon(gameicon)
             
-            
         
-        
-        
-      
+        #self.pillarlist=[]
         self.flag=0
         self.scores=0
         
         self.land1x=350
         self.land2x=840
-        
-        
-        self.pillarlist=[]
-        a=pillar()
-        self.pillarlist.append(a)
-        
-        
-        self.birds=bird()
         
         self.keyinit=0
         self.keytest=0
@@ -117,6 +87,112 @@ class game:
         self.flag=0
         self.welcomeflag=1
         self.musicflag=False
+        
+        self.hit=pygame.mixer.Sound("assets/sounds/hit.ogg")
+        
+        self.point=pygame.mixer.Sound("assets/sounds/point.ogg")
+        self.wing=pygame.mixer.Sound("assets/sounds/wing.ogg")
+        self.swoosh=pygame.mixer.Sound("assets/sounds/swoosh.ogg")
+        self.die=pygame.mixer.Sound("assets/sounds/die.ogg")
+        
+        
+        
+        self.birds=bird()
+        
+        
+        self.pillarlist=[]
+        
+        a=pillar()
+        self.pillarlist.append(a)
+        
+        
+        self.font_path = "fonts/sans.ttf"
+        self.font_size = 55
+        self.font1= pygame.font.Font(self.font_path,self.font_size)
+        self.font2=pygame.font.Font("fonts/sans.ttf",30)
+        self.font3=pygame.font.Font("fonts/sans.ttf",40)
+        self.font4=pygame.font.Font("fonts/sans.ttf",23)
+        
+        
+    
+  
+    def initialize(self):
+        
+        
+        
+        
+        
+        self.flag=0
+        self.scores=0
+        
+        self.land1x=350
+        self.land2x=840
+        
+        self.keyinit=0
+        self.keytest=0
+        
+        self.flag=0
+        self.welcomeflag=1
+        self.musicflag=False
+        
+        
+        
+        
+            
+        
+        
+        
+      
+        
+        
+        
+        
+        self.birds=bird()
+        
+        
+        self.pillarlist=[]
+        
+        a=pillar()
+        self.pillarlist.append(a)
+        
+        
+        
+        
+
+    def dispinit(self):
+        pygame.init()
+        self.sound=True
+        
+        try:
+            pygame.mixer.init()
+        except Exception, err:
+            self.sound=False
+            print 'error with sound', err
+            
+        
+        
+        self.info=pygame.display.Info()
+        
+        self.gameDisplay=pygame.display.get_surface()
+        
+        if not(self.gameDisplay):
+            
+            self.gameDisplay = pygame.display.set_mode((self.info.current_w,self.info.current_h))
+            
+            
+            pygame.display.set_caption("Flappy Birds")
+            #gameicon=pygame.image.load('images/icon.png')
+            #pygame.display.set_icon(gameicon)
+            
+        self.font_path = "fonts/sans.ttf"
+        self.font_size = 55
+        self.font1= pygame.font.Font(self.font_path,self.font_size)
+        self.font2=pygame.font.Font("fonts/sans.ttf",30)
+        self.font3=pygame.font.Font("fonts/sans.ttf",40)
+        self.font4=pygame.font.Font("fonts/sans.ttf",23)
+        
+        
+        
     
     
     def make(self):
@@ -141,12 +217,6 @@ class game:
         # Variable Initialization
         
         
-        font_path = "fonts/comicsans.ttf"
-        font_size = 40
-        font1= pygame.font.Font(font_path, font_size)
-        font2=pygame.font.Font("fonts/sans.ttf",25)
-        font3=pygame.font.Font("fonts/sans.ttf",40)
-        font4=pygame.font.Font("fonts/sans.ttf",20)
         
         
         
@@ -155,12 +225,6 @@ class game:
         
         
         
-        font_path = "fonts/sans.ttf"
-        font_size = 55
-        font1= pygame.font.Font(font_path, font_size)
-        font2=pygame.font.Font("fonts/sans.ttf",30)
-        font3=pygame.font.Font("fonts/sans.ttf",40)
-        font4=pygame.font.Font("fonts/sans.ttf",23)
         
         
         
@@ -171,9 +235,10 @@ class game:
         
         # Sound loads
         
-        hit=pygame.mixer.Sound("assets/sounds/hit.ogg")
+        self.hit=pygame.mixer.Sound("assets/sounds/hit.ogg")
+        
+        self.point=pygame.mixer.Sound("assets/sounds/point.ogg")
         wing=pygame.mixer.Sound("assets/sounds/wing.ogg")
-        point=pygame.mixer.Sound("assets/sounds/point.ogg")
         swoosh=pygame.mixer.Sound("assets/sounds/swoosh.ogg")
         die=pygame.mixer.Sound("assets/sounds/die.ogg")
         
@@ -219,9 +284,11 @@ class game:
             
             if(self.welcomeflag==1):
                 a=welcomescreen()
-                a.run(self.gameDisplay)
+                a.run()
                 self.welcomeflag=0
                 self.keyinit=1
+                self.dispinit()
+                #pygame.init()
             
             
                     
@@ -243,9 +310,12 @@ class game:
                 
                 if(self.welcomeflag==1):
                     a=welcomescreen()
-                    a.run(self.gameDisplay)
+                    a.run()
                     self.welcomeflag=0
                     self.keyinit=1
+                    self.dispinit()
+                    
+                    #pygame.init()
                     
                     break
 		    #pygame.display.update()
@@ -275,9 +345,11 @@ class game:
             
             if(self.welcomeflag==1):
                 a=welcomescreen()
-                a.run(self.gameDisplay)
+                a.run()
                 self.welcomeflag=0
                 self.keyinit=1
+                self.dispinit()
+                #pygame.init()
 		continue
 		#pygame.display.update()
             	#clock.tick(60)
@@ -333,7 +405,7 @@ class game:
             self.birds.display(self.gameDisplay,self.flag)
             
             
-            head3=font3.render(str(self.scores),1,(white))
+            head3=self.font3.render(str(self.scores),1,(white))
             self.gameDisplay.blit(head3,(580,30))
             
             

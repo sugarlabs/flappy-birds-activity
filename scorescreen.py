@@ -38,17 +38,6 @@ from random import *
 
 
 
-sound=True
-        
-try:
-    pygame.mixer.init()
-except Exception, err:
-    sound=False
-    print 'error with sound', err
-
-swoosh=pygame.mixer.Sound("assets/sounds/swoosh.ogg")
-
-
 
 class scorescreen:
 
@@ -110,6 +99,10 @@ class scorescreen:
         
         
         
+        
+        
+        
+        
         #font load
         
         
@@ -152,7 +145,7 @@ class scorescreen:
         #buttonsound=pygame.mixer.Sound("sound/sound-button.ogg")
         
         
-        
+        swoosh=pygame.mixer.Sound("assets/sounds/swoosh.ogg")
         
         
         
@@ -202,10 +195,7 @@ class scorescreen:
                 
                 if(pygame.mouse.get_pressed())[0]==1 and press==0:
                     
-                    b=scorescreen()
-                    b.run(g.gameDisplay,g.scores)
-                    g.initialize()
-                    g.welcomeflag=1
+                    
             
             
                     return

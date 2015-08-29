@@ -84,9 +84,32 @@ score=0
 
 
 class welcomescreen:
-
-    def run(self,gameDisplay):
+    
+    
+    def __init__(self):
         
+        pygame.init()
+        self.sound=True
+        
+        try:
+            pygame.mixer.init()
+        except Exception, err:
+            self.sound=False
+            print 'error with sound', err
+            
+        
+        
+        self.info=pygame.display.Info()
+        self.gameDisplay=pygame.display.get_surface()
+        
+        
+        if not(self.gameDisplay):
+            
+            self.gameDisplay = pygame.display.set_mode((self.info.current_w,self.info.current_h))
+           
+
+    def run(self):
+        '''
         pygame.init()
         sound=True
         
@@ -96,6 +119,15 @@ class welcomescreen:
             sound=False
             print 'error with sound', err
             
+         
+        
+        info=pygame.display.Info()
+        gameDisplay=pygame.display.get_surface()
+        
+        
+        
+        '''    
+        
         black=(0,0,0)
         white=(255,255,255)
         clock=pygame.time.Clock()
@@ -105,17 +137,12 @@ class welcomescreen:
         disp_width = 600
         disp_height = 600
             
-        press=0    
-        
-        info=pygame.display.Info()
-        gameDisplay=pygame.display.get_surface()
+        press=0   
         
         
-        if not(gameDisplay):
-            
-            gameDisplay = pygame.display.set_mode((info.current_w,info.current_h))
-            
-            
+        
+        
+        
         #image load    
         
         land=pygame.image.load("assets/land.png").convert()
@@ -191,6 +218,9 @@ class welcomescreen:
                     
                 if event.type==pygame.KEYDOWN and event.key==273:
                     #print "help"
+                    
+                    #pygame.display.quit()
+                    #pygame.quit()
                     return    
                     
                 
@@ -202,14 +232,14 @@ class welcomescreen:
             
             
                 
-            gameDisplay.fill(white)
+            self.gameDisplay.fill(white)
            
-            gameDisplay.blit(skyfill,(350,0))
-            gameDisplay.blit(sky,(350,400))
+            self.gameDisplay.blit(skyfill,(350,0))
+            self.gameDisplay.blit(sky,(350,400))
             
              # Platform blit
-            gameDisplay.blit(land1,(land1x,600))
-            gameDisplay.blit(land2,(land2x,600))
+            self.gameDisplay.blit(land1,(land1x,600))
+            self.gameDisplay.blit(land2,(land2x,600))
             
             land1x-=3
             land2x-=3
@@ -224,22 +254,22 @@ class welcomescreen:
             
             #bird display
             
-            birds.display(gameDisplay,flag)
+            birds.display(self.gameDisplay,flag)
             
             
             
-            gameDisplay.blit(rules,(500,140))
-            gameDisplay.blit(button,(700,330))
+            self.gameDisplay.blit(rules,(500,140))
+            self.gameDisplay.blit(button,(700,330))
             
             head3=font2.render("Use this button ->",1,(white))
-            gameDisplay.blit(head3,(480,320))
+            self.gameDisplay.blit(head3,(480,320))
             
             head3=font2.render("to play the game",1,(white))
-            gameDisplay.blit(head3,(480,340))
+            self.gameDisplay.blit(head3,(480,340))
             
             
             
-            gameDisplay.blit(logo,(455,30))
+            self.gameDisplay.blit(logo,(455,30))
             
             
             #for event in pygame.event.get():
@@ -250,9 +280,9 @@ class welcomescreen:
            
             #left and right black background patches
                       
-            pygame.draw.rect(gameDisplay,black,(0,0,350,768))    
+            pygame.draw.rect(self.gameDisplay,black,(0,0,350,768))    
                     
-            pygame.draw.rect(gameDisplay,black,(840,0,693,768))
+            pygame.draw.rect(self.gameDisplay,black,(840,0,693,768))
             
             
             

@@ -7,7 +7,9 @@ from random import *
 from scorescreen import *
 
 
+'''
 
+pygame.init()
 sound=True
         
 try:
@@ -21,6 +23,9 @@ wing=pygame.mixer.Sound("assets/sounds/wing.ogg")
 point=pygame.mixer.Sound("assets/sounds/point.ogg")
 swoosh=pygame.mixer.Sound("assets/sounds/swoosh.ogg")
 die=pygame.mixer.Sound("assets/sounds/die.ogg")
+
+'''
+
 
 class pillar(object):
     
@@ -89,7 +94,7 @@ class pillar(object):
                 bird_rect.colliderect(pillar2_rect)):
             
             
-            hit.play(0)
+            g.hit.play(0)
             
             
             b=scorescreen()
@@ -110,7 +115,7 @@ class pillar(object):
             
             g.scores+=1
             
-            point.play(0)
+            g.point.play(0)
             #pygame.mixer.music.load("assets/sounds/point.ogg")
             #pygame.mixer.music.play(0,0)
             #print "hello"
@@ -220,7 +225,7 @@ class bird(object):
         if (bird_rect.colliderect(platform_rect1)==True or \
             bird_rect.colliderect(platform_rect2)==True):
             
-            hit.play(0)
+            g.hit.play(0)
             
             b=scorescreen()
             b.run(g.gameDisplay,g.scores)
