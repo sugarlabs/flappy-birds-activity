@@ -197,15 +197,15 @@ class game:
                 
                 self.birds.t=0
                             
-            if event.type==pygame.KEYUP  and event.key==273 and self.musicflag==True:
+            if event.type==pygame.KEYUP  and event.key==273 and self.musicflag:
                 
                 self.keytest=0
                 self.musicflag=False
             
-            if self.musicflag==False and event.type==pygame.KEYDOWN  and event.key==273: 
+            if not(self.musicflag) and event.type==pygame.KEYDOWN  and event.key==273: 
                 pygame.mixer.music.load("assets/sounds/wing.ogg")
                 pygame.mixer.music.play(0,0)
-                self.musicflag=not self.musicflag
+                self.musicflag= True
 
             # bird display
             
@@ -226,7 +226,7 @@ class game:
             pygame.display.update()
             clock.tick(60)
      
-            if crashed==True:                                   # Game crash or Close check
+            if crashed:                                   # Game crash or Close check
                 pygame.quit()
                 sys.exit()
        
@@ -236,7 +236,7 @@ class game:
         if event1.type == pygame.QUIT:
             crashed=True
    
-        if crashed==True:
+        if crashed:
             pygame.quit()
             sys.exit()
             

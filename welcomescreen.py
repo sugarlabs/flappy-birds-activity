@@ -41,8 +41,6 @@ class welcomescreen:
         clock=pygame.time.Clock()
             
         crashed=False   
- 
-        
 
         #image load    
         
@@ -75,15 +73,7 @@ class welcomescreen:
         font2=pygame.font.Font("fonts/sans.ttf",25)
         
         flag=1
-       
-        '''
-        
-        with open('score.pkl', 'rb') as input:    #REading
-            maxscore = pickle.load(input)
-        '''    
-        
-        
-        
+
         birds=bird()
         
         button=pygame.image.load("assets/button.png")
@@ -104,10 +94,6 @@ class welcomescreen:
                     crashed=True
                     
                 if event.type==pygame.KEYDOWN and event.key==273:
-                    #print "help"
-                    
-                    #pygame.display.quit()
-                    #pygame.quit()
                     return    
                     
                 
@@ -158,7 +144,7 @@ class welcomescreen:
             pygame.display.update()
             clock.tick(60)
      
-            if crashed==True:                        # Game crash or Close check
+            if crashed:                        # Game crash or Close check
                 pygame.quit()
                 sys.exit()
      
@@ -168,7 +154,7 @@ class welcomescreen:
         if event1.type == pygame.QUIT:
             crashed=True
    
-        if crashed==True:
+        if crashed:
             pygame.quit()
             sys.exit()
 

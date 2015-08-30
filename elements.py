@@ -116,9 +116,8 @@ class bird(object):
                 self.count=0
                 self.up=not self.up
                 
-            if(self.up==True):
+            if self.up:
                 self.y-=1
-                
             else:
                 self.y+=1
 
@@ -126,21 +125,17 @@ class bird(object):
     def jump(self,land1,land2,land1x,land2x,g):
         
         self.t+=1
-        
-        #if(self.v==0)
-        
+
         if(self.v>0 and self.t>0 and self.t<25 and self.angle<=20):
             self.angle+=2
             
         if(self.t>25 and self.angle>-80):
             self.angle-=2
 
-        
         # motion equation v=u-at
         
         self.v=self.u-(self.a/24)*(self.t)
         
-            
         self.y-=self.v
         
         if(self.y<0):
@@ -153,8 +148,7 @@ class bird(object):
         platform_rect1=land1.get_rect(center=(land1x+land1.get_width()/2,600+land1.get_height()/2))
         platform_rect2=land2.get_rect(center=(land2x+land2.get_width()/2,600+land2.get_height()/2))
         
-        if (bird_rect.colliderect(platform_rect1)==True or \
-            bird_rect.colliderect(platform_rect2)==True):
+        if bird_rect.colliderect(platform_rect1) or bird_rect.colliderect(platform_rect2):
             
             g.hit.play(0)
             
