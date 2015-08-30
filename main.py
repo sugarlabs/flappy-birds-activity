@@ -22,23 +22,13 @@
 
 
 
-import os
 import gtk
-import pickle
 import pygame
 import sys
 
-from math import *
-
-from random import *
-
-from elements import *
-
-from welcomescreen import *
-
-#from scorescreen import *
-
-
+from elements import bird
+from elements import pillar
+from welcomescreen import welcomescreen
 
 
 class game:
@@ -113,22 +103,17 @@ class game:
         black=(0,0,0)
         white=(255,255,255)
         clock=pygame.time.Clock()
-        timer=pygame.time.Clock()
             
         crashed=False   
-        disp_width = 600
-        disp_height = 600
-            
-        press=0    
 
         # Sound loads
         
         self.hit=pygame.mixer.Sound("assets/sounds/hit.ogg")
         
         self.point=pygame.mixer.Sound("assets/sounds/point.ogg")
-        wing=pygame.mixer.Sound("assets/sounds/wing.ogg")
-        swoosh=pygame.mixer.Sound("assets/sounds/swoosh.ogg")
-        die=pygame.mixer.Sound("assets/sounds/die.ogg")
+        #wing=pygame.mixer.Sound("assets/sounds/wing.ogg")
+        #swoosh=pygame.mixer.Sound("assets/sounds/swoosh.ogg")
+        #die=pygame.mixer.Sound("assets/sounds/die.ogg")
 
         #image loads
 

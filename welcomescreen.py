@@ -25,12 +25,7 @@ import gtk
 import pygame
 import sys
 
-from math import *
-
-from random import *
-
-from elements import *
-
+from elements import bird
 
 
 class welcomescreen:

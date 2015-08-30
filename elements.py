@@ -1,11 +1,8 @@
+
+
 import pygame
-
-import sys
-
-from random import *
-
-from scorescreen import *
-
+from random import randint
+from scorescreen import scorescreen
 
 class pillar(object):
     
