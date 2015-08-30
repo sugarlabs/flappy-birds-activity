@@ -7,7 +7,7 @@ import sugargame.canvas
 from sugar.activity import activity
 from sugar.graphics.toolbarbox import ToolbarBox
 from sugar.activity.widgets import ActivityToolbarButton
-from sugar.graphics.toolbutton import ToolButton
+
 from sugar.activity.widgets import StopButton
 from gettext import gettext as _
 import main
