@@ -21,11 +21,7 @@
 # Utkarsh Tiwari    iamutkarshtiwari@gmail.com
 
 
-
-
-import os
 import gtk
-import pickle
 import pygame
 import sys
 
@@ -40,38 +36,17 @@ from elements import *
 class welcomescreen:
     
     
-    def __init__(self):
-        
-        pygame.init()
-        self.sound=True
-        
-        try:
-            pygame.mixer.init()
-        except Exception, err:
-            self.sound=False
-            print 'error with sound', err
-            
-        self.info=pygame.display.Info()
-        self.gameDisplay=pygame.display.get_surface()
-        
-        
-        if not(self.gameDisplay):
-            
-            self.gameDisplay = pygame.display.set_mode((self.info.current_w,self.info.current_h))
-           
+    def __init__(self, display):
+        self.gameDisplay = display
 
     def run(self):
         
         black=(0,0,0)
         white=(255,255,255)
         clock=pygame.time.Clock()
-        timer=pygame.time.Clock()
             
         crashed=False   
-        disp_width = 600
-        disp_height = 600
-            
-        press=0   
+ 
         
 
         #image load    
@@ -101,16 +76,8 @@ class welcomescreen:
         
         rules=pygame.image.load("assets/splash.png")
 
-        
-        #font load
-        
-        
-        font_path = "fonts/sans.ttf"
-        font_size = 55
-        font1= pygame.font.Font(font_path, font_size)
+
         font2=pygame.font.Font("fonts/sans.ttf",25)
-        font3=pygame.font.Font("fonts/sans.ttf",30)
-        font4=pygame.font.Font("fonts/sans.ttf",20)
         
         flag=1
        
@@ -121,7 +88,6 @@ class welcomescreen:
         '''    
         
         
-        buttonsound=pygame.mixer.Sound("sound/sound-button.ogg")
         
         birds=bird()
         
@@ -138,7 +104,7 @@ class welcomescreen:
             while gtk.events_pending():
                 gtk.main_iteration()
             for event in pygame.event.get():
-            #totaltime+=timer.tick()
+                #totaltime+=timer.tick()
                 if event.type == pygame.QUIT:
                     crashed=True
                     

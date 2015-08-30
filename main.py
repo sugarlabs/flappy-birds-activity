@@ -36,7 +36,7 @@ from elements import *
 
 from welcomescreen import *
 
-from scorescreen import *
+#from scorescreen import *
 
 
 
@@ -158,7 +158,7 @@ class game:
             mos_x,mos_y=pygame.mouse.get_pos() 
             
             if self.welcomeflag == 1:
-                a = welcomescreen()
+                a = welcomescreen(self.gameDisplay)
                 a.run()
                 self.welcomeflag=0
                 self.keyinit=1
@@ -176,7 +176,7 @@ class game:
                 
                 
                 if(self.welcomeflag==1):
-                    a=welcomescreen()
+                    a=welcomescreen(self.gameDisplay)
                     a.run()
                     self.welcomeflag=0
                     self.keyinit=1
@@ -199,7 +199,7 @@ class game:
                 self.birds.jump(land1,land2,self.land1x,self.land2x,self)
             
             if(self.welcomeflag==1):
-                a=welcomescreen()
+                a=welcomescreen(self.gameDisplay)
                 a.run()
                 self.welcomeflag=0
                 self.keyinit=1

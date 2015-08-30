@@ -91,13 +91,15 @@ class bird(object):
         self.count=0
         self.up=True
         
-        self.bird=bird1=pygame.image.load("assets/bird/bird1.png").convert()
+        bird1=pygame.image.load("assets/bird/bird1.png").convert()
        
         bird2=pygame.image.load("assets/bird/bird2.png").convert()
        
         bird3=pygame.image.load("assets/bird/bird3.png").convert()
        
         bird4=pygame.image.load("assets/bird/bird4.png").convert()
+
+        self.bird = bird1
        
         self.birdlist=[bird1,bird2,bird3,bird4]
        
