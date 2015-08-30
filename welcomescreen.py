@@ -37,52 +37,6 @@ from elements import *
 
 
 
-
-'''
-
-
-  
-pygame.init()
-sound=True
-        
-try:
-    pygame.mixer.init()
-except Exception, err:
-    sound=False
-    print 'error with sound', error
-            
-black=(0,0,0)
-white=(255,255,255)
-clock=pygame.time.Clock()
-timer=pygame.time.Clock()
-            
-crashed=False   
-disp_width = 600
-disp_height = 600
-            
-press=0    
-            
-gameDisplay=pygame.display.get_surface()
-        
-if not(gameDisplay):
-    info=pygame.display.Info()
-    gameDisplay = pygame.display.set_mode((info.current_w,info.current_h))
-            
-    #pygame.display.set_caption("Make Them Fall")
-    #gameicon=pygame.image.load('data/images/icon.png')
-    #pygame.display.set_icon(gameicon)
-
-#back=pygame.image.load('background/back6.jpg')
-fruitscore=0
-score=0
-
-'''
-
-
-
-
-
-
 class welcomescreen:
     
     
@@ -97,8 +51,6 @@ class welcomescreen:
             self.sound=False
             print 'error with sound', err
             
-        
-        
         self.info=pygame.display.Info()
         self.gameDisplay=pygame.display.get_surface()
         
@@ -109,24 +61,6 @@ class welcomescreen:
            
 
     def run(self):
-        '''
-        pygame.init()
-        sound=True
-        
-        try:
-            pygame.mixer.init()
-        except Exception, err:
-            sound=False
-            print 'error with sound', err
-            
-         
-        
-        info=pygame.display.Info()
-        gameDisplay=pygame.display.get_surface()
-        
-        
-        
-        '''    
         
         black=(0,0,0)
         white=(255,255,255)
@@ -139,10 +73,7 @@ class welcomescreen:
             
         press=0   
         
-        
-        
-        
-        
+
         #image load    
         
         land=pygame.image.load("assets/land.png").convert()
@@ -169,9 +100,7 @@ class welcomescreen:
         
         
         rules=pygame.image.load("assets/splash.png")
-            
-        
-        
+
         
         #font load
         
@@ -199,10 +128,7 @@ class welcomescreen:
         button=pygame.image.load("assets/button.png")
         logo=pygame.image.load("assets/logo.png")
         logo=pygame.transform.scale(logo,(280,80))
-            
-        
-        
-        
+
         
         # GAME LOOP BEGINS !!!
         
@@ -228,10 +154,6 @@ class welcomescreen:
             #print "help"
             mos_x,mos_y=pygame.mouse.get_pos() 
             
-            #print event
-            
-            
-                
             self.gameDisplay.fill(white)
            
             self.gameDisplay.blit(skyfill,(350,0))
@@ -250,14 +172,10 @@ class welcomescreen:
             if(land2x<=-140):
                 land2x=837
             
-            
-            
             #bird display
             
             birds.display(self.gameDisplay,flag)
-            
-            
-            
+
             self.gameDisplay.blit(rules,(500,140))
             self.gameDisplay.blit(button,(700,330))
             
@@ -266,17 +184,9 @@ class welcomescreen:
             
             head3=font2.render("to play the game",1,(white))
             self.gameDisplay.blit(head3,(480,340))
-            
-            
-            
+
             self.gameDisplay.blit(logo,(455,30))
             
-            
-            #for event in pygame.event.get():
-                
-            
-            
-           
            
             #left and right black background patches
                       
@@ -284,23 +194,12 @@ class welcomescreen:
                     
             pygame.draw.rect(self.gameDisplay,black,(840,0,693,768))
             
-            
-            
-            
-            
-            
-            
-            
-            
             pygame.display.update()
             clock.tick(60)
      
-            if crashed==True:                                   # Game crash or Close check
+            if crashed==True:                        # Game crash or Close check
                 pygame.quit()
                 sys.exit()
-     
-     
-     
      
         # Just a window exception check condition
 

@@ -34,11 +34,6 @@ from math import *
 from random import *
 
 
-
-
-
-
-
 class scorescreen:
 
     def run(self,gameDisplay,scores):
@@ -95,14 +90,7 @@ class scorescreen:
         
         replay=pygame.image.load("assets/replay.png")
         replay=pygame.transform.scale(replay,(150,90))
-            
-        
-        
-        
-        
-        
-        
-        
+
         #font load
         
         
@@ -113,10 +101,7 @@ class scorescreen:
         font3=pygame.font.Font("fonts/sans.ttf",30)
         font4=pygame.font.Font("fonts/sans.ttf",20)
         
-        
-        
-        #scores=20
-        
+       
         #Scores load
         
         
@@ -128,9 +113,7 @@ class scorescreen:
         
         with open('score.pkl', 'rb') as input:    #REading
             maxscore = pickle.load(input)
-            
-            
-       
+
         newflag=0
         
         if(scores>maxscore):
@@ -139,26 +122,21 @@ class scorescreen:
                 
             maxscore=scores 
             newflag=1
-            
-        
-        
+
         #buttonsound=pygame.mixer.Sound("sound/sound-button.ogg")
         
         
         swoosh=pygame.mixer.Sound("assets/sounds/swoosh.ogg")
-        
-        
-        
+
         
         # GAME LOOP BEGINS !!!
         
         while not crashed:
-        #Gtk events
-            
+            #Gtk events
             while gtk.events_pending():
                 gtk.main_iteration()
             for event in pygame.event.get():
-            #totaltime+=timer.tick()
+                #totaltime+=timer.tick()
                 if event.type == pygame.QUIT:
                     crashed=True
                     
@@ -169,22 +147,16 @@ class scorescreen:
                 
             #print "help"
             mos_x,mos_y=pygame.mouse.get_pos() 
-            
-            #print event
-            
-            
-                
+
             gameDisplay.fill(white)
            
             gameDisplay.blit(skyfill,(350,0))
             gameDisplay.blit(sky,(350,400))
             
            
-             # Platform blit
+            # Platform blit
             gameDisplay.blit(land1,(land1x,600))
-           
-           
-            
+
             gameDisplay.blit(scoreboard,(420,100))
             
             gameDisplay.blit(replay,(530,450))
@@ -194,16 +166,9 @@ class scorescreen:
                 gameDisplay.blit(pygame.transform.scale(replay,(replay.get_width()+4,replay.get_height()+4)),(530-2,450-2))
                 
                 if(pygame.mouse.get_pressed())[0]==1 and press==0:
-                    
-                    
-            
-            
+   
                     return
-                    
-                    
-                    
-            
-            
+
             #print scores
             scoress=font2.render(str(scores),2,black)
             
@@ -217,36 +182,21 @@ class scorescreen:
             
             
             gameDisplay.blit(maxscores,(630,330))
-                           
-            
-           
-           
-           
-           
+
             #left and right black background patches
                       
             pygame.draw.rect(gameDisplay,black,(0,0,350,768))    
                     
             pygame.draw.rect(gameDisplay,black,(840,0,693,768))
             
-            
-            
-            
-            
-            
-            
-            
-            
             pygame.display.update()
             clock.tick(60)
      
-            if crashed==True:                                   # Game crash or Close check
+            if crashed==True:                       # Game crash or Close check
                 pygame.quit()
                 sys.exit()
      
-     
-     
-     
+
         # Just a window exception check condition
 
         event1=pygame.event.get()                                 
@@ -259,7 +209,6 @@ class scorescreen:
 
 
 '''
-
 
 if __name__ == "__main__":
     g = scorescreen()

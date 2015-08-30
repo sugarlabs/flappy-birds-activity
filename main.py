@@ -22,7 +22,6 @@
 
 
 
-
 import os
 import gtk
 import pickle
@@ -42,39 +41,14 @@ from scorescreen import *
 
 
 
-
-
 class game:
     
     
     def __init__(self):
-      
-        pygame.init()
-        self.sound=True
+        pass
         
-        try:
-            pygame.mixer.init()
-        except Exception, err:
-            self.sound=False
-            print 'error with sound', err
-            
-        
-        
-        self.info=pygame.display.Info()
-        
-        self.gameDisplay=pygame.display.get_surface()
-        
-        if not(self.gameDisplay):
-            
-            self.gameDisplay = pygame.display.set_mode((self.info.current_w,self.info.current_h))
-            
-            
-            pygame.display.set_caption("Flappy Birds")
-            #gameicon=pygame.image.load('images/icon.png')
-            #pygame.display.set_icon(gameicon)
-            
-        
-        #self.pillarlist=[]
+    def initialize(self):
+
         self.flag=0
         self.scores=0
         
@@ -87,7 +61,28 @@ class game:
         self.flag=0
         self.welcomeflag=1
         self.musicflag=False
+
+        pygame.init()
+        self.sound=True
         
+        try:
+            pygame.mixer.init()
+        except Exception, err:
+            self.sound=False
+            print 'error with sound', err
+
+        self.info=pygame.display.Info()
+        
+        self.gameDisplay=pygame.display.get_surface()
+        
+        if not(self.gameDisplay):
+            
+            self.gameDisplay = pygame.display.set_mode((self.info.current_w,self.info.current_h))
+
+            pygame.display.set_caption("Flappy Birds")
+            #gameicon=pygame.image.load('images/icon.png')
+            #pygame.display.set_icon(gameicon)
+
         self.hit=pygame.mixer.Sound("assets/sounds/hit.ogg")
         
         self.point=pygame.mixer.Sound("assets/sounds/point.ogg")
@@ -95,111 +90,26 @@ class game:
         self.swoosh=pygame.mixer.Sound("assets/sounds/swoosh.ogg")
         self.die=pygame.mixer.Sound("assets/sounds/die.ogg")
         
-        
-        
-        self.birds=bird()
-        
-        
-        self.pillarlist=[]
-        
-        a=pillar()
-        self.pillarlist.append(a)
-        
-        
         self.font_path = "fonts/sans.ttf"
         self.font_size = 55
         self.font1= pygame.font.Font(self.font_path,self.font_size)
         self.font2=pygame.font.Font("fonts/sans.ttf",30)
         self.font3=pygame.font.Font("fonts/sans.ttf",40)
         self.font4=pygame.font.Font("fonts/sans.ttf",23)
-        
-        
-    
-  
-    def initialize(self):
-        
-        
-        
-        
-        
-        self.flag=0
-        self.scores=0
-        
-        self.land1x=350
-        self.land2x=840
-        
-        self.keyinit=0
-        self.keytest=0
-        
-        self.flag=0
-        self.welcomeflag=1
-        self.musicflag=False
-        
-        
-        
-        
-            
-        
-        
-        
-      
-        
-        
-        
-        
+
         self.birds=bird()
-        
-        
+
         self.pillarlist=[]
         
         a=pillar()
         self.pillarlist.append(a)
-        
-        
-        
         
 
-    def dispinit(self):
-        pygame.init()
-        self.sound=True
-        
-        try:
-            pygame.mixer.init()
-        except Exception, err:
-            self.sound=False
-            print 'error with sound', err
-            
-        
-        
-        self.info=pygame.display.Info()
-        
-        self.gameDisplay=pygame.display.get_surface()
-        
-        if not(self.gameDisplay):
-            
-            self.gameDisplay = pygame.display.set_mode((self.info.current_w,self.info.current_h))
-            
-            
-            pygame.display.set_caption("Flappy Birds")
-            #gameicon=pygame.image.load('images/icon.png')
-            #pygame.display.set_icon(gameicon)
-            
-        self.font_path = "fonts/sans.ttf"
-        self.font_size = 55
-        self.font1= pygame.font.Font(self.font_path,self.font_size)
-        self.font2=pygame.font.Font("fonts/sans.ttf",30)
-        self.font3=pygame.font.Font("fonts/sans.ttf",40)
-        self.font4=pygame.font.Font("fonts/sans.ttf",23)
-        
-        
-        
-    
-    
     def make(self):
+
+        self.initialize()
         
-        
-        
-        
+        # Variable Initialization
         black=(0,0,0)
         white=(255,255,255)
         clock=pygame.time.Clock()
@@ -210,29 +120,7 @@ class game:
         disp_height = 600
             
         press=0    
-        
-        
-        
-        
-        # Variable Initialization
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
         # Sound loads
         
         self.hit=pygame.mixer.Sound("assets/sounds/hit.ogg")
@@ -241,13 +129,9 @@ class game:
         wing=pygame.mixer.Sound("assets/sounds/wing.ogg")
         swoosh=pygame.mixer.Sound("assets/sounds/swoosh.ogg")
         die=pygame.mixer.Sound("assets/sounds/die.ogg")
-        
-        
-        
-        
+
         #image loads
-        
-        
+
         land=pygame.image.load("assets/land.png").convert()
         land1=pygame.transform.scale(land,(490,150))
         land2=land1
@@ -259,50 +143,33 @@ class game:
         skyfill=pygame.image.load("assets/skyfill.png").convert()
         skyfill=pygame.transform.scale(skyfill,(490,500))
         
-        
-        
-        
-        
-        
         # GAME LOOP BEGINS !!!
         
         while not crashed:
-        #Gtk events
+            #Gtk events
             
             while gtk.events_pending():
                 gtk.main_iteration()
             for event in pygame.event.get():
-            #totaltime+=timer.tick()
+                #totaltime+=timer.tick()
                 if event.type == pygame.QUIT:
                     crashed=True
                 
-            
             mos_x,mos_y=pygame.mouse.get_pos() 
             
-            #print "hello"
-            
-            
-            if(self.welcomeflag==1):
-                a=welcomescreen()
+            if self.welcomeflag == 1:
+                a = welcomescreen()
                 a.run()
                 self.welcomeflag=0
                 self.keyinit=1
-                self.dispinit()
-                #pygame.init()
-            
-            
-                    
-            
-            
-            
+                #self.dispinit()
+                
             self.gameDisplay.fill(white)
-            
             
             self.gameDisplay.blit(skyfill,(350,0))
             self.gameDisplay.blit(sky,(350,400))
             
-            
-            
+          
             # Pillar Display
             for i in self.pillarlist:
                 i.display(self.gameDisplay,self.pillarlist,self.birds,self)
@@ -313,18 +180,8 @@ class game:
                     a.run()
                     self.welcomeflag=0
                     self.keyinit=1
-                    self.dispinit()
-                    
-                    #pygame.init()
-                    
                     break
-		    #pygame.display.update()
-            	    #clock.tick(60)
-            
-            
-            
-            
-            
+
             # Platform blit
             self.gameDisplay.blit(land1,(self.land1x,600))
             self.gameDisplay.blit(land2,(self.land2x,600))
@@ -337,9 +194,7 @@ class game:
                 
             if(self.land2x<=-140):
                 self.land2x=837
-            
-            
-            
+
             if(self.keyinit==1):
                 self.birds.jump(land1,land2,self.land1x,self.land2x,self)
             
@@ -348,79 +203,31 @@ class game:
                 a.run()
                 self.welcomeflag=0
                 self.keyinit=1
-                self.dispinit()
-                #pygame.init()
-		continue
-		#pygame.display.update()
-            	#clock.tick(60)
-		
-            
-            
-            
-                
-            
-            
-                #pygame.mixer.music.load("assets/sounds/wing.ogg")
-                #pygame.mixer.music.play(0,0)
-                #self.musicflag=not self.musicflag
-            
-            #print event
+                continue
             
             if event.type==pygame.KEYDOWN and event.key==273 and self.keytest==0:
-                #print "hellp"
-                #self.musicflag=True
-                #pygame.mixer.music.fadeout(10)
-                
-                
-                
-                #wing.fadeout(5)
-                #wing.play(0)
                 self.keyinit=self.keytest=1
                 if(self.birds.t>25):
                     self.birds.angle=0
                 
                 self.birds.t=0
-                #birds.u=birds.v
-                
-               
                             
             if event.type==pygame.KEYUP  and event.key==273 and self.musicflag==True:
                 
                 self.keytest=0
                 self.musicflag=False
-                
-            
             
             if self.musicflag==False and event.type==pygame.KEYDOWN  and event.key==273: 
                 pygame.mixer.music.load("assets/sounds/wing.ogg")
                 pygame.mixer.music.play(0,0)
                 self.musicflag=not self.musicflag
-            
-            
-            
-            
-            
+
             # bird display
             
             self.birds.display(self.gameDisplay,self.flag)
             
-            
             head3=self.font3.render(str(self.scores),1,(white))
             self.gameDisplay.blit(head3,(580,30))
-            
-            
-            #print self.scores
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
             
             # BLACK RECTANGLES DISPLAY
                       
@@ -431,22 +238,13 @@ class game:
                     
             pygame.draw.rect(self.gameDisplay,black,(840,0,693,768))
             
-            
-            
-            
             pygame.display.update()
             clock.tick(60)
      
             if crashed==True:                                   # Game crash or Close check
                 pygame.quit()
                 sys.exit()
-     
-     
-     
-     
-     
-     
-     
+       
         # Just a window exception check condition
 
         event1=pygame.event.get()                                 
@@ -460,7 +258,6 @@ class game:
 
 if __name__ == "__main__":
     g = game()
-    g.initialize()
     g.make()         
 
             

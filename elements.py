@@ -7,31 +7,7 @@ from random import *
 from scorescreen import *
 
 
-'''
-
-pygame.init()
-sound=True
-        
-try:
-    pygame.mixer.init()
-except Exception, err:
-    sound=False
-    print 'error with sound', err
-
-hit=pygame.mixer.Sound("assets/sounds/hit.ogg")
-wing=pygame.mixer.Sound("assets/sounds/wing.ogg")
-point=pygame.mixer.Sound("assets/sounds/point.ogg")
-swoosh=pygame.mixer.Sound("assets/sounds/swoosh.ogg")
-die=pygame.mixer.Sound("assets/sounds/die.ogg")
-
-'''
-
-
 class pillar(object):
-    
-    
-    
-                
     
     def __init__(self):
         self.gap=160
@@ -42,10 +18,7 @@ class pillar(object):
         self.height=randint(60,300)
         self.pipeup=pygame.transform.scale(pygame.image.load("assets/pipe.png").convert(),(52-4,self.height))
         self.pipedown=pygame.transform.scale(pygame.image.load("assets/pipe.png").convert(),(52-4,768-self.height))
-  
-        
-        
-        
+
     def display(self,gameDisplay,pillarlist,birds,g):
         
         gameDisplay.blit(self.pipeup,(self.x+2, self.y))
@@ -61,8 +34,6 @@ class pillar(object):
         
         if(self.x<295):
             pillarlist.remove(self)
-            
-        
         
         #collision check
         
@@ -70,9 +41,6 @@ class pillar(object):
         bird_rect=birds.bird.get_rect(center=(birds.x+birds.bird.get_width()/2, \
                                         
                                             birds.y+birds.bird.get_height()/2))
-        
-        
-        
         
         pipe1_rect=self.pipeup.get_rect(center=(self.x+2+self.pipeup.get_width()/2, \
                                                self.y+self.pipeup.get_height()/2))
@@ -96,45 +64,19 @@ class pillar(object):
             
             g.hit.play(0)
             
-            
             b=scorescreen()
             b.run(g.gameDisplay,g.scores)
             g.initialize()
             g.welcomeflag=1
-            
-            
             return
                                        
-                                       
-        
-        
-        
         #scores increment
         if(self.x==399):
-            
-            
             g.scores+=1
-            
             g.point.play(0)
-            #pygame.mixer.music.load("assets/sounds/point.ogg")
-            #pygame.mixer.music.play(0,0)
-            #print "hello"
-            
-            
-        #print g.scores    
-            
-        
-        
-        
-            
-            
-            
-            
+
             
 class bird(object):
-    
-    
-    
     
     def __init__(self):
         
@@ -170,8 +112,6 @@ class bird(object):
             
         if(flag==1):
             
-            
-            
             self.count+=1
             if(self.count==25):
                 self.count=0
@@ -182,12 +122,7 @@ class bird(object):
                 
             else:
                 self.y+=1
-            
-                
-                
-            
-        
-        
+
       
     def jump(self,land1,land2,land1x,land2x,g):
         
@@ -200,8 +135,7 @@ class bird(object):
             
         if(self.t>25 and self.angle>-80):
             self.angle-=2
-            
-           
+
         
         # motion equation v=u-at
         
@@ -212,8 +146,6 @@ class bird(object):
         
         if(self.y<0):
             self.y=0
-        
-        
         
         #bird platform fall check
         
@@ -234,10 +166,4 @@ class bird(object):
             
             
             return
-            
-        
-         
-        
-        
-    
-        
+
