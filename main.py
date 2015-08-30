@@ -28,6 +28,7 @@ import sys
 
 from elements import bird
 from elements import pillar
+from elements import load_elements_images
 from welcomescreen import welcomescreen
 
 
@@ -86,6 +87,9 @@ class game:
         self.font2=pygame.font.Font("fonts/sans.ttf",30)
         self.font3=pygame.font.Font("fonts/sans.ttf",40)
         self.font4=pygame.font.Font("fonts/sans.ttf",23)
+
+        # Load the images for elements
+        load_elements_images()
 
         self.birds=bird()
 
