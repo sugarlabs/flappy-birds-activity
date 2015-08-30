@@ -47,8 +47,8 @@ class pillar(object):
         
         if(self.x==618):
             pillarlist.append(pillar())
-        
-        if(self.x<295):
+        # original 295
+        if(self.x<0):
             pillarlist.remove(self)
         
         #collision check
