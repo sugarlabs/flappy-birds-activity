@@ -113,7 +113,7 @@ class scorescreen:
                 if event.type == pygame.QUIT:
                     crashed=True
                     
-                if event.type==pygame.KEYDOWN and event.key==273:
+                if event.type==pygame.KEYDOWN:
                     swoosh.play(0)
                     return 1
                     
