@@ -1,6 +1,6 @@
 [Activity]
 name = Flappy Birds
-activity_version = 2
+activity_version = 3
 bundle_id = org.sugarlabs.flappy
 icon = flappy
 exec = sugar-activity activity.Activity
