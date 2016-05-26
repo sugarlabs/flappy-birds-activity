@@ -133,14 +133,15 @@ class scorescreen:
                     return
 
             # print scores
-            scoress = font2.render(str(scores), 2, black)
+            scoress = font2.render(_(str(scores)), 2, black)
 
             gameDisplay.blit(scoress, (630, 265))
 
             if(newflag == 1):
-                maxscores = font2.render(str(maxscore) + _("  NEW!"), 2, red)
+                maxscores = font2.render(
+                    _(str(maxscore)) + _("  NEW!"), 2, red)
             else:
-                maxscores = font2.render(str(maxscore), 2, black)
+                maxscores = font2.render(_(str(maxscore)), 2, black)
 
             gameDisplay.blit(maxscores, (630, 330))
 
