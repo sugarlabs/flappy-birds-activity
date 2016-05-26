@@ -26,6 +26,7 @@ import gtk
 import pickle
 import pygame
 import sys
+from gettext import gettext as _
 
 
 class scorescreen:

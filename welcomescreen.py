@@ -24,6 +24,7 @@
 import gtk
 import pygame
 import sys
+from gettext import gettext as _
 
 from elements import bird
 
