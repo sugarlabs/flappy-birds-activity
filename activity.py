@@ -26,7 +26,6 @@ class Activity(activity.Activity):
         self._pygamecanvas.run_pygame(self.actividad.make)
 
     def build_toolbar(self):
-
         toolbar_box = ToolbarBox()
         self.set_toolbar_box(toolbar_box)
         toolbar_box.show()
