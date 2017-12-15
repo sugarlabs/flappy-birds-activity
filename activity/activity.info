@@ -6,3 +6,4 @@ icon = flappy
 exec = sugar-activity activity.Activity
 license = GPLv3
 summary = An arcade game
+repository = https://github.com/sugarlabs/flappy-birds-activity.git
