@@ -61,7 +61,7 @@ python main.py
 
 - Open Terminal activity and change to the Flappy Birds activity directory
 ```
-cd activities\SonicJump.activity
+cd activities\FlappyBirds.activity
 ```
 - To run
 ```
