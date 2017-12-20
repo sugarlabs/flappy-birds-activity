@@ -166,7 +166,7 @@ class game:
 
             # bird display
             self.birds.display(self.gameDisplay, self.flag)
-            head3 = self.font3.render(_(str(self.scores)), 1, (white))
+            head3 = self.font3.render(str(self.scores), 1, (white))
             self.gameDisplay.blit(head3, (580, 30))
 
             # BLACK RECTANGLES DISPLAY

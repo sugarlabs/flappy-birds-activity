@@ -1,5 +1,4 @@
 import pygame
-from gettext import gettext as _
 from random import randint
 from scorescreen import scorescreen
 
