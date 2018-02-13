@@ -56,6 +56,9 @@ class scorescreen:
         font2 = pygame.font.Font("fonts/Arimo.ttf", 30)
 
         # Scores load
+        
+        if os.path.exists("score.pkl")==False:
+            open('score.pkl','w+')
         if os.path.getsize("score.pkl") == 0:
             with open('score.pkl', 'wb') as output:
                 pickle.dump(0, output, pickle.HIGHEST_PROTOCOL)

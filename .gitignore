@@ -1,8 +1,5 @@
-*.o
-*.pyo
 *.pyc
 *.py~
-*.pkl~
 *.xo
-*.info~
-
+*.pyo
+*.pkl

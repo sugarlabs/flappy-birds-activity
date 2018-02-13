@@ -6,6 +6,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 import sugargame
 import sugargame.canvas
+import pygame
 from sugar3.activity import activity
 from sugar3.graphics.toolbarbox import ToolbarBox
 from sugar3.activity.widgets import ActivityToolbarButton
@@ -14,21 +15,23 @@ from sugar3.activity.widgets import StopButton
 from gettext import gettext as _
 import main
 
+
 class Activity(activity.Activity):
 
     def __init__(self, handle):
         activity.Activity.__init__(self, handle)
         self.max_participants = 1
         self.sound = True
-        self.actividad = main.game()
+        self.game = main.game()
+        self.game.canvas = sugargame.canvas.PygameCanvas(
+                self,
+                main=self.game.make,
+                modules=[pygame.display, pygame.font])
+        self.set_canvas(self.game.canvas)
+        self.game.canvas.grab_focus()
         self.build_toolbar()
-        self._pygamecanvas = sugargame.canvas.PygameCanvas(self)
-        self.set_canvas(self._pygamecanvas)
-        self._pygamecanvas.grab_focus()
-        self._pygamecanvas.run_pygame(self.actividad.main)
 
     def build_toolbar(self):
-
         toolbar_box = ToolbarBox()
         self.set_toolbar_box(toolbar_box)
         toolbar_box.show()
@@ -62,11 +65,10 @@ class Activity(activity.Activity):
 
     def sound_control(self, button):
         self.sound = not self.sound
-        self.actividad.sound = self.sound
+        self.game.sound = self.sound
         if not self.sound:
             button.set_icon('speaker-muted-000')
             button.set_tooltip(_('No sound'))
         else:
             button.set_icon('speaker-muted-100')
             button.set_tooltip(_('Sound'))
-
