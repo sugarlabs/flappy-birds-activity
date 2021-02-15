@@ -27,7 +27,7 @@ class Activity(activity.Activity):
                 self,
                 main=self.game.make,
                 modules=[pygame.display, pygame.font,
-                    pygame.mixer ])
+                         pygame.mixer])
         self.set_canvas(self.game.canvas)
         self.game.canvas.grab_focus()
         self.build_toolbar()

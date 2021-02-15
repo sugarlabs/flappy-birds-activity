@@ -127,7 +127,8 @@ class game:
 
             # Pillar Display
             for i in self.pillarlist:
-                i.display(self.gameDisplay, self.pillarlist, self.birds, self)
+                i.display(self.gameDisplay, self.pillarlist, self.birds,
+                          self.sound, self)
                 if(self.welcomeflag == 1):
                     a = welcomescreen(self.gameDisplay)
                     a.run()
@@ -146,7 +147,8 @@ class game:
             if(self.land2x <= -140):
                 self.land2x = 837
             if(self.keyinit == 1):
-                self.birds.jump(land1, land2, self.land1x, self.land2x, self)
+                self.birds.jump(land1, land2, self.land1x,
+                                self.land2x, self.sound, self)
             if(self.welcomeflag == 1):
                 a = welcomescreen(self.gameDisplay)
                 a.run()
@@ -159,14 +161,17 @@ class game:
                 if(self.birds.t > 25):
                     self.birds.angle = 0
                 self.birds.t = 0
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_m:
+                self.sound = not self.sound
             if event.type == pygame.KEYUP and event.key == 273 \
                     and self.musicflag:
                 self.keytest = 0
                 self.musicflag = False
             if not(self.musicflag) and event.type == pygame.KEYDOWN \
                     and event.key == 273:
-                pygame.mixer.music.load("assets/sounds/wing.ogg")
-                pygame.mixer.music.play(0, 0)
+                if self.sound:
+                    pygame.mixer.music.load("assets/sounds/wing.ogg")
+                    pygame.mixer.music.play(0, 0)
                 self.musicflag = True
 
             # bird display

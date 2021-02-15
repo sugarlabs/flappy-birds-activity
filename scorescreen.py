@@ -32,7 +32,7 @@ from gettext import gettext as _
 
 class scorescreen:
 
-    def run(self, gameDisplay, scores):
+    def run(self, gameDisplay, scores, sound):
         black = (0, 0, 0)
         white = (255, 255, 255)
         red = (255, 0, 0)
@@ -84,7 +84,8 @@ class scorescreen:
                 if event.type == pygame.QUIT:
                     return
                 if event.type == pygame.KEYDOWN:
-                    swoosh.play(0)
+                    if sound:
+                        swoosh.play(0)
                     return 1
 
             # print "help"

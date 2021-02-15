@@ -34,7 +34,7 @@ class pillar(object):
         self.pipedown_width = self.pipedown.get_width()
         self.pipedown_height = self.pipedown.get_height()
 
-    def display(self, gameDisplay, pillarlist, birds, g):
+    def display(self, gameDisplay, pillarlist, birds, sound, g):
         gameDisplay.blit(self.pipeup, (self.x + 2, self.y))
         gameDisplay.blit(pillarup, (self.x, self.y + self.height))
         gameDisplay.blit(pillardown, (self.x, self.y + self.height + self.gap))
@@ -61,16 +61,18 @@ class pillar(object):
                                                     self.y + self.height + self.gap + 26 + self.pipedown.get_height() / 2))
         if bird_rect.colliderect(pipe1_rect) or bird_rect.colliderect(pipe2_rect) or \
                 bird_rect.colliderect(pillar1_rect) or bird_rect.colliderect(pillar2_rect):
-            g.hit.play(0)
+            if sound:
+                g.hit.play(0)
             b = scorescreen()
-            b.run(g.gameDisplay, g.scores)
+            b.run(g.gameDisplay, g.scores, sound)
             g.initialize()
             g.welcomeflag = 1
             return
         # scores increment
         if(self.x == 399):
             g.scores += 1
-            g.point.play(0)
+            if sound:
+                g.point.play(0)
 
 
 class bird(object):
@@ -108,7 +110,7 @@ class bird(object):
             else:
                 self.y += 1
 
-    def jump(self, land1, land2, land1x, land2x, g):
+    def jump(self, land1, land2, land1x, land2x, sound, g):
         self.t += 1
 
         if(self.v > 0 and self.t > 0 and self.t < 25 and self.angle <= 20):
@@ -131,8 +133,9 @@ class bird(object):
         platform_rect2 = land2.get_rect(
             center=(land2x + land2.get_width() / 2, 600 + land2.get_height() / 2))
         if bird_rect.colliderect(platform_rect1) or bird_rect.colliderect(platform_rect2):
-            g.hit.play(0)
+            if sound:
+                g.hit.play(0)
             b = scorescreen()
-            b.run(g.gameDisplay, g.scores)
+            b.run(g.gameDisplay, g.scores, sound)
             g.initialize()
             g.welcomeflag = 1

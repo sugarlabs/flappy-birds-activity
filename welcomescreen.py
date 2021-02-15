@@ -94,8 +94,10 @@ class welcomescreen:
             head3 = font2.render(_("Use this button ->"), 1, (white))
             self.gameDisplay.blit(head3, (480, 320))
             head3 = font2.render(_("to play the game"), 1, (white))
+            mute = font2.render(_("Press M to Mute/Unmute"), 1, (white))
             self.gameDisplay.blit(head3, (480, 340))
             self.gameDisplay.blit(logo, (455, 30))
+            self.gameDisplay.blit(mute, (440, 550))
             # left and right black background patches
             pygame.draw.rect(self.gameDisplay, black, (0, 0, 350, 768))
             pygame.draw.rect(self.gameDisplay, black, (840, 0, 693, 768))
