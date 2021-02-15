@@ -70,7 +70,7 @@ class welcomescreen:
             for event in pygame.event.get():
                 # totaltime+=timer.tick()
                 if event.type == pygame.QUIT:
-                    crashed = True
+                    return
                 if event.type == pygame.KEYDOWN and event.key == 273:
                     return
 
@@ -101,16 +101,3 @@ class welcomescreen:
             pygame.draw.rect(self.gameDisplay, black, (840, 0, 693, 768))
             pygame.display.update()
             clock.tick(60)
-
-            if crashed:                        # Game crash or Close check
-                pygame.quit()
-                sys.exit()
-
-        # Just a window exception check condition
-        event1 = pygame.event.get()
-        if event1.type == pygame.QUIT:
-            crashed = True
-
-        if crashed:
-            pygame.quit()
-            sys.exit()

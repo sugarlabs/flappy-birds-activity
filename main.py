@@ -113,7 +113,7 @@ class game:
             for event in pygame.event.get():
                 # totaltime+=timer.tick()
                 if event.type == pygame.QUIT:
-                    crashed = True
+                    return
             mos_x, mos_y = pygame.mouse.get_pos()
             if self.welcomeflag == 1:
                 a = welcomescreen(self.gameDisplay)
@@ -153,15 +153,18 @@ class game:
                 self.welcomeflag = 0
                 self.keyinit = 1
                 continue
-            if event.type == pygame.KEYDOWN and event.key == 273 and self.keytest == 0:
+            if event.type == pygame.KEYDOWN and event.key == 273 \
+                    and self.keytest == 0:
                 self.keyinit = self.keytest = 1
                 if(self.birds.t > 25):
                     self.birds.angle = 0
                 self.birds.t = 0
-            if event.type == pygame.KEYUP and event.key == 273 and self.musicflag:
+            if event.type == pygame.KEYUP and event.key == 273 \
+                    and self.musicflag:
                 self.keytest = 0
                 self.musicflag = False
-            if not(self.musicflag) and event.type == pygame.KEYDOWN and event.key == 273:
+            if not(self.musicflag) and event.type == pygame.KEYDOWN \
+                    and event.key == 273:
                 pygame.mixer.music.load("assets/sounds/wing.ogg")
                 pygame.mixer.music.play(0, 0)
                 self.musicflag = True
@@ -179,18 +182,6 @@ class game:
             pygame.display.update()
             clock.tick(60)
 
-            if crashed:                                   # Game crash or Close check
-                pygame.quit()
-                sys.exit()
-
-        # Just a window exception check condition
-        event1 = pygame.event.get()
-        if event1.type == pygame.QUIT:
-            crashed = True
-
-        if crashed:
-            pygame.quit()
-            sys.exit()
 
 if __name__ == "__main__":
     g = game()

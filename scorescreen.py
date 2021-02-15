@@ -56,9 +56,8 @@ class scorescreen:
         font2 = pygame.font.Font("fonts/Arimo.ttf", 30)
 
         # Scores load
-        
-        if os.path.exists("score.pkl")==False:
-            open('score.pkl','w+')
+        if not os.path.exists("score.pkl"):
+            open('score.pkl', 'w+')
         if os.path.getsize("score.pkl") == 0:
             with open('score.pkl', 'wb') as output:
                 pickle.dump(0, output, pickle.HIGHEST_PROTOCOL)
@@ -83,7 +82,7 @@ class scorescreen:
             for event in pygame.event.get():
                 # totaltime+=timer.tick()
                 if event.type == pygame.QUIT:
-                    crashed = True
+                    return
                 if event.type == pygame.KEYDOWN:
                     swoosh.play(0)
                     return 1
@@ -99,9 +98,18 @@ class scorescreen:
             gameDisplay.blit(scoreboard, (420, 100))
             gameDisplay.blit(replay, (530, 450))
 
-            if replay.get_rect(center=(530 + (replay.get_width() / 2), 450 + (replay.get_height() / 2))).collidepoint(mos_x, mos_y):
-                gameDisplay.blit(pygame.transform.scale(
-                    replay, (replay.get_width() + 4, replay.get_height() + 4)), (530 - 2, 450 - 2))
+            if replay.get_rect(
+                    center=(530 + (replay.get_width() / 2),
+                            450 + (replay.get_height() / 2))
+            ).collidepoint(mos_x, mos_y):
+                gameDisplay.blit(
+                        pygame.transform.scale(
+                            replay, (
+                                replay.get_width() + 4,
+                                replay.get_height() + 4)
+                            ),
+                        (530 - 2, 450 - 2)
+                )
                 if(pygame.mouse.get_pressed())[0] == 1 and press == 0:
                     return
             # print scores
@@ -120,15 +128,3 @@ class scorescreen:
             pygame.draw.rect(gameDisplay, black, (840, 0, 693, 768))
             pygame.display.update()
             clock.tick(60)
-
-            if crashed == True:                       # Game crash or Close check
-                pygame.quit()
-                sys.exit()
-
-        # Just a window exception check condition
-        event1 = pygame.event.get()
-        if event1.type == pygame.QUIT:
-            crashed = True
-        if crashed == True:
-            pygame.quit()
-            sys.exit()
