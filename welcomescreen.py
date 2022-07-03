@@ -71,7 +71,7 @@ class welcomescreen:
                 # totaltime+=timer.tick()
                 if event.type == pygame.QUIT:
                     crashed = True
-                if event.type == pygame.KEYDOWN and event.key == 273:
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_UP or event.type == pygame.MOUSEBUTTONDOWN:
                     return
 
             mos_x, mos_y = pygame.mouse.get_pos()
