@@ -34,6 +34,9 @@ class welcomescreen:
 
     def __init__(self, display):
         self.gameDisplay = display
+        self.x1_x2 = [[350, 350 + 490] for _ in range(4)]
+        self.x_speeds = (3, 0.5, 0.75, 1)
+        self.y = (600, 400, 400 + 33 * (200 / 109), 400 + 65 * (200 / 109))
 
     def run(self):
         black = (0, 0, 0)
@@ -44,14 +47,23 @@ class welcomescreen:
         land = pygame.image.load("assets/land.png").convert()
         land1 = pygame.transform.scale(land, (490, 150))
         land2 = land1
-        sky = pygame.image.load("assets/sky.png").convert()
-        sky = pygame.transform.scale(sky, (490, 200))
+        background = [
+            (i, i) for i in (
+                pygame.transform.scale(
+                    pygame.image.load("assets/sky3.png").convert(), (490, 33 * (200 / 109)),
+                ),
+                pygame.transform.scale(
+                    pygame.image.load("assets/sky2.png").convert_alpha(), (490, 40 * (200 / 109)),
+                ),
+                pygame.transform.scale(
+                    pygame.image.load("assets/sky1.png").convert_alpha(), (490, 44 * (200 / 109)),
+                ),
+            )
+        ]
         skyfill = pygame.image.load("assets/skyfill.png").convert()
         skyfill = pygame.transform.scale(skyfill, (490, 500))
         scoreboard = pygame.image.load("assets/scoreboard.png")
         scoreboard = pygame.transform.scale(scoreboard, (360, 450))
-        land1x = 350
-        land2x = 840
         replay = pygame.image.load("assets/replay.png")
         replay = pygame.transform.scale(replay, (150, 90))
         rules = pygame.image.load("assets/splash.png")
@@ -77,16 +89,25 @@ class welcomescreen:
             mos_x, mos_y = pygame.mouse.get_pos()
             self.gameDisplay.fill(white)
             self.gameDisplay.blit(skyfill, (350, 0))
-            self.gameDisplay.blit(sky, (350, 400))
+            for i in range(3):
+                self.gameDisplay.blit(background[i][0], (self.x1_x2[i+1][0], self.y[i+1]))
+                self.gameDisplay.blit(background[i][1], (self.x1_x2[i+1][1], self.y[i+1]))
+
             # Platform blit
-            self.gameDisplay.blit(land1, (land1x, 600))
-            self.gameDisplay.blit(land2, (land2x, 600))
-            land1x -= 3
-            land2x -= 3
-            if(land1x <= -140):
-                land1x = 837
-            if(land2x <= -140):
-                land2x = 837
+            # Land 1 (with x coord x1x2[0][0]) and Land 2 (with x coord x1x2[0][1]) are displayed next to each 
+            # other and are moved such that if one goes out of the screen, it is moved to the other side of the 
+            # screen. y[0] contains the height of land.
+            self.gameDisplay.blit(land1, (self.x1_x2[0][0], self.y[0]))
+            self.gameDisplay.blit(land2, (self.x1_x2[0][1], self.y[0]))
+
+            # Similar logic to move the 3 sky background for parallax effect.
+            for i, speed in enumerate(self.x_speeds):
+                self.x1_x2[i][0] -= speed
+                self.x1_x2[i][1] -= speed
+                if(self.x1_x2[i][0] <= -140):
+                    self.x1_x2[i][0] = 837
+                if(self.x1_x2[i][1] <= -140):
+                    self.x1_x2[i][1] = 837
             # bird display
             birds.display(self.gameDisplay, flag)
             self.gameDisplay.blit(rules, (500, 140))
