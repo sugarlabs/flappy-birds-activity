@@ -153,15 +153,15 @@ class game:
                 self.welcomeflag = 0
                 self.keyinit = 1
                 continue
-            if event.type == pygame.KEYDOWN and event.key == 273 and self.keytest == 0:
+            if (event.type == pygame.KEYDOWN and event.key == pygame.K_UP or event.type == pygame.MOUSEBUTTONDOWN) and self.keytest == 0:
                 self.keyinit = self.keytest = 1
                 if(self.birds.t > 25):
                     self.birds.angle = 0
                 self.birds.t = 0
-            if event.type == pygame.KEYUP and event.key == 273 and self.musicflag:
+            if (event.type == pygame.KEYUP and event.key == pygame.K_UP or event.type == pygame.MOUSEBUTTONDOWN) and self.musicflag:
                 self.keytest = 0
                 self.musicflag = False
-            if not(self.musicflag) and event.type == pygame.KEYDOWN and event.key == 273:
+            if not(self.musicflag) and (event.type == pygame.KEYDOWN and event.key == pygame.K_UP or event.type == pygame.MOUSEBUTTONDOWN):
                 pygame.mixer.music.load("assets/sounds/wing.ogg")
                 pygame.mixer.music.play(0, 0)
                 self.musicflag = True
