@@ -42,8 +42,10 @@ class game:
     def initialize(self):
         self.flag = 0
         self.scores = 0
-        self.land1x = 350
-        self.land2x = 840
+        # x coordinate and duplicate image x coordinate for land and 3 skies repectively.
+        self.x1_x2 = [[350, 350 + 490] for _ in range(4)]
+        self.x_speeds = (3, 0.5, 0.75, 1)
+        self.y = (600, 400, 400 + 33 * (200 / 109), 400 + 65 * (200 / 109))
         self.keyinit = 0
         self.keytest = 0
         self.flag = 0
@@ -97,13 +99,22 @@ class game:
         self.point = pygame.mixer.Sound("assets/sounds/point.ogg")
 
         # image loads
-        land = pygame.image.load("assets/land.png").convert()
-        land1 = pygame.transform.scale(land, (490, 150))
-        land2 = land1
-        sky = pygame.image.load("assets/sky.png").convert()
-        sky = pygame.transform.scale(sky, (490, 200))
-        skyfill = pygame.image.load("assets/skyfill.png").convert()
-        skyfill = pygame.transform.scale(skyfill, (490, 500))
+        land1 = land2 = pygame.transform.scale(pygame.image.load("assets/land.png").convert(), (490, 150))
+            
+        background = [
+            (i, i) for i in (
+                pygame.transform.scale(
+                    pygame.image.load("assets/sky3.png").convert(), (490, 33 * (200 / 109)),
+                ),
+                pygame.transform.scale(
+                    pygame.image.load("assets/sky2.png").convert_alpha(), (490, 40 * (200 / 109)),
+                ),
+                pygame.transform.scale(
+                    pygame.image.load("assets/sky1.png").convert_alpha(), (490, 44 * (200 / 109)),
+                ),
+            )
+        ]
+        skyfill = pygame.transform.scale(pygame.image.load("assets/skyfill.png").convert(), (490, 500))
 
         # GAME LOOP BEGINS !!!
         while not crashed:
@@ -123,7 +134,9 @@ class game:
 
             self.gameDisplay.fill(white)
             self.gameDisplay.blit(skyfill, (350, 0))
-            self.gameDisplay.blit(sky, (350, 400))
+            for i in range(3):
+                self.gameDisplay.blit(background[i][0], (self.x1_x2[i+1][0], self.y[i+1]))
+                self.gameDisplay.blit(background[i][1], (self.x1_x2[i+1][1], self.y[i+1]))
 
             # Pillar Display
             for i in self.pillarlist:
@@ -136,17 +149,23 @@ class game:
                     break
 
             # Platform blit
-            self.gameDisplay.blit(land1, (self.land1x, 600))
-            self.gameDisplay.blit(land2, (self.land2x, 600))
-            self.land1x -= 3
-            self.land2x -= 3
+            # Land 1 (with x coord x1x2[0][0]) and Land 2 (with x coord x1x2[0][1]) are displayed next to each 
+            # other and are moved such that if one goes out of the screen, it is moved to the other side of the 
+            # screen. y[0] contains the height of land.
+            self.gameDisplay.blit(land1, (self.x1_x2[0][0], self.y[0]))
+            self.gameDisplay.blit(land2, (self.x1_x2[0][1], self.y[0]))
+            
+            # Similar logic to move the 3 sky background for parallax effect.
+            for i, speed in enumerate(self.x_speeds):
+                self.x1_x2[i][0] -= speed
+                self.x1_x2[i][1] -= speed
+                if(self.x1_x2[i][0] <= -140):
+                    self.x1_x2[i][0] = 837
+                if(self.x1_x2[i][1] <= -140):
+                    self.x1_x2[i][1] = 837
 
-            if(self.land1x <= -140):
-                self.land1x = 837
-            if(self.land2x <= -140):
-                self.land2x = 837
             if(self.keyinit == 1):
-                self.birds.jump(land1, land2, self.land1x, self.land2x, self)
+                self.birds.jump(land1, land2, self.x1_x2[0][0], self.x1_x2[0][1], self)
             if(self.welcomeflag == 1):
                 a = welcomescreen(self.gameDisplay)
                 a.run()
