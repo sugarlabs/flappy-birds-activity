@@ -42,9 +42,15 @@ class game:
     def initialize(self):
         self.flag = 0
         self.scores = 0
+        # Top left corner of the actual game, as it is surrounded by 2 black rectangles
+        self.x_start = 350
+        self.width = 490
+        self.x_end = self.width + self.x_start
+        self.height = 768
         # x coordinate and duplicate image x coordinate for land and 3 skies repectively.
-        self.x1_x2 = [[350, 350 + 490] for _ in range(4)]
+        self.x1_x2 = [[self.x_start, self.x_start + self.width] for _ in range(4)]
         self.x_speeds = (3, 0.5, 0.75, 1)
+        # 109 being the height of combined sky image (sky1 + sky2 + sky3) when overlapped and 200/109 being the scaling factor.
         self.y = (600, 400, 400 + 33 * (200 / 109), 400 + 65 * (200 / 109))
         self.keyinit = 0
         self.keytest = 0
@@ -99,22 +105,22 @@ class game:
         self.point = pygame.mixer.Sound("assets/sounds/point.ogg")
 
         # image loads
-        land1 = land2 = pygame.transform.scale(pygame.image.load("assets/land.png").convert(), (490, 150))
+        land1 = land2 = pygame.transform.scale(pygame.image.load("assets/land.png").convert(), (self.width, 150))
             
         background = [
             (i, i) for i in (
                 pygame.transform.scale(
-                    pygame.image.load("assets/sky3.png").convert(), (490, 33 * (200 / 109)),
+                    pygame.image.load("assets/sky3.png").convert(), (self.width, 33 * (200 / 109)),
                 ),
                 pygame.transform.scale(
-                    pygame.image.load("assets/sky2.png").convert_alpha(), (490, 40 * (200 / 109)),
+                    pygame.image.load("assets/sky2.png").convert_alpha(), (self.width, 40 * (200 / 109)),
                 ),
                 pygame.transform.scale(
-                    pygame.image.load("assets/sky1.png").convert_alpha(), (490, 44 * (200 / 109)),
+                    pygame.image.load("assets/sky1.png").convert_alpha(), (self.width, 44 * (200 / 109)),
                 ),
             )
         ]
-        skyfill = pygame.transform.scale(pygame.image.load("assets/skyfill.png").convert(), (490, 500))
+        skyfill = pygame.transform.scale(pygame.image.load("assets/skyfill.png").convert(), (self.width, 500))
 
         # GAME LOOP BEGINS !!!
         while not crashed:
@@ -133,7 +139,7 @@ class game:
                 self.keyinit = 1
 
             self.gameDisplay.fill(white)
-            self.gameDisplay.blit(skyfill, (350, 0))
+            self.gameDisplay.blit(skyfill, (self.x_start, 0))
             for i in range(3):
                 self.gameDisplay.blit(background[i][0], (self.x1_x2[i+1][0], self.y[i+1]))
                 self.gameDisplay.blit(background[i][1], (self.x1_x2[i+1][1], self.y[i+1]))
@@ -191,10 +197,10 @@ class game:
             self.gameDisplay.blit(head3, (580, 30))
 
             # BLACK RECTANGLES DISPLAY
-            pygame.draw.line(self.gameDisplay, black, (350, 0), (350, 768), 1)
-            pygame.draw.line(self.gameDisplay, black, (840, 0), (840, 768), 1)
-            pygame.draw.rect(self.gameDisplay, black, (0, 0, 350, 768))
-            pygame.draw.rect(self.gameDisplay, black, (840, 0, 693, 768))
+            pygame.draw.line(self.gameDisplay, black, (self.x_start, 0), (self.x_start, self.height), 1)
+            pygame.draw.line(self.gameDisplay, black, (self.x_end, 0), (self.x_end, self.height), 1)
+            pygame.draw.rect(self.gameDisplay, black, (0, 0, self.x_start, self.height))
+            pygame.draw.rect(self.gameDisplay, black, (self.x_end, 0, 693, self.height))
             pygame.display.update()
             clock.tick(60)
 
