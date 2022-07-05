@@ -39,11 +39,35 @@ class welcomescreen:
         self.width = 490
         self.x_end = self.width + self.x_start
         self.height = 768
-        # x coordinate and duplicate image x coordinate for land and 3 skies repectively.
+        # x coordinate and duplicate image x coordinate for 3 skies and land respectively.
         self.x1_x2 = [[self.x_start, self.x_start + self.width] for _ in range(4)]
-        self.x_speeds = (3, 0.5, 0.75, 1)
-        # 109 being the height of combined sky image (sky1 + sky2 + sky3) when overlapped and 200/109 being the scaling factor.
-        self.y = (600, 400, 400 + 33 * (200 / 109), 400 + 65 * (200 / 109))
+        self.x_speeds = (0.5, 0.75, 1, 3)
+        self.background_actual_height = pygame.image.load("assets/sky.png").get_height()
+        self.background_scaled_height = 200
+        # Overlapped image for the combined background should be scaled to 200.
+        self.scaling_factor = self.background_scaled_height / self.background_actual_height
+
+        background = [
+            pygame.image.load("assets/sky3.png").convert(),
+            pygame.image.load("assets/sky2.png").convert(),
+            pygame.image.load("assets/sky1.png").convert_alpha()
+        ]
+        background = list(
+            map(lambda img: pygame.transform.scale(
+                img, (self.width, int(img.get_height() * self.scaling_factor))
+            ), background)
+        )
+
+        # Y coodinates of 3 skies and land respectively.
+        self.y = (
+            400,
+            400 + background[0].get_height(),
+            400 + self.background_scaled_height - background[2].get_height(),
+            400 + self.background_scaled_height,
+        )
+        # Duplicate each image so images can be moved, if one goes out of screen, other covers for it.
+        self.background = [(i, i) for i in background]
+
 
     def run(self):
         black = (0, 0, 0)
@@ -54,19 +78,6 @@ class welcomescreen:
         land = pygame.image.load("assets/land.png").convert()
         land1 = pygame.transform.scale(land, (self.width, 150))
         land2 = land1
-        background = [
-            (i, i) for i in (
-                pygame.transform.scale(
-                    pygame.image.load("assets/sky3.png").convert(), (self.width, 33 * (200 / 109)),
-                ),
-                pygame.transform.scale(
-                    pygame.image.load("assets/sky2.png").convert_alpha(), (self.width, 40 * (200 / 109)),
-                ),
-                pygame.transform.scale(
-                    pygame.image.load("assets/sky1.png").convert_alpha(), (self.width, 44 * (200 / 109)),
-                ),
-            )
-        ]
         skyfill = pygame.image.load("assets/skyfill.png").convert()
         skyfill = pygame.transform.scale(skyfill, (self.width, 500))
         scoreboard = pygame.image.load("assets/scoreboard.png")
@@ -97,15 +108,15 @@ class welcomescreen:
             self.gameDisplay.fill(white)
             self.gameDisplay.blit(skyfill, (self.x_start, 0))
             for i in range(3):
-                self.gameDisplay.blit(background[i][0], (self.x1_x2[i+1][0], self.y[i+1]))
-                self.gameDisplay.blit(background[i][1], (self.x1_x2[i+1][1], self.y[i+1]))
+                self.gameDisplay.blit(self.background[i][0], (self.x1_x2[i][0], self.y[i]))
+                self.gameDisplay.blit(self.background[i][1], (self.x1_x2[i][1], self.y[i]))
 
             # Platform blit
-            # Land 1 (with x coord x1x2[0][0]) and Land 2 (with x coord x1x2[0][1]) are displayed next to each 
-            # other and are moved such that if one goes out of the screen, it is moved to the other side of the 
-            # screen. y[0] contains the height of land.
-            self.gameDisplay.blit(land1, (self.x1_x2[0][0], self.y[0]))
-            self.gameDisplay.blit(land2, (self.x1_x2[0][1], self.y[0]))
+            # Land 1 (with x coord x1x2[3][0]) and Land 2 (with x coord x1x2[3][1]) are duplicate images,
+            # displayed next to each other and are moved. If one goes out of the screen, other covers for it.
+            # y[3] contains the height of land.
+            self.gameDisplay.blit(land1, (self.x1_x2[3][0], self.y[3]))
+            self.gameDisplay.blit(land2, (self.x1_x2[3][1], self.y[3]))
 
             # Similar logic to move the 3 sky background for parallax effect.
             for i, speed in enumerate(self.x_speeds):
