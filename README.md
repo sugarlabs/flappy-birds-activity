@@ -3,6 +3,8 @@ What is this?
 
 Flappy Birds is an arcade game for the Sugar desktop.
 
+![Screenshot](screenshots/2.png)
+
 How to use?
 ===========
 
