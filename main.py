@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Flappy Birds
-# Copyright (C) 2015  Utkarsh Tiwari
+# Flappy
+# Copyright (C) 2014 Alan Aguiar
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,217 +18,210 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # Contact information:
-# Utkarsh Tiwari    iamutkarshtiwari@gmail.com
-
+# Alan Aguiar alanjas@hotmail.com
 
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+
 import pygame
-import sys
-from gettext import gettext as _
+from sugar3.graphics.style import GRID_CELL_SIZE
 
-from elements import bird
-from elements import pillar
-from elements import load_elements_images
-from welcomescreen import welcomescreen
+from floor import Floor
+from pipe import Pipe_I
+from pipe import Pipe_S
+from background import Background
+from bird import Bird
+from scores import EndScore
+from scores import Message
+from scores import CurrentScore
+
+FLOOR_Y = 50
+DIST = 160
+PIPE_W = 91
+MIN_PIPE_H = 40 + 42
+MIN_HEIGHT = MIN_PIPE_H * 2 + DIST + FLOOR_Y
+MES_W = 227
+MES_H = 251
+PIPE_IH = 122
+
+INIT = 0
+PLAY = 1
+END = 2
+PAUSE = 3
+
+INIT_BIRD_SPEED = 8
+FPS = 30
 
 
-class game:
+class Flappy():
 
     def __init__(self):
-        pass
-
-    def initialize(self):
-        self.flag = 0
-        self.scores = 0
-        # Top left corner of the actual game, as it is surrounded by 2 black rectangles
-        self.x_start = 350
-        self.width = 490
-        self.x_end = self.width + self.x_start
-        self.height = 768
-        # x coordinate and duplicate image x coordinate for 3 skies and land respectively.
-        self.x1_x2 = [[self.x_start, self.x_start + self.width] for _ in range(4)]
-        self.x_speeds = (0.5, 0.75, 1, 3)
-
-        self.keyinit = 0
-        self.keytest = 0
-        self.flag = 0
-        self.welcomeflag = 1
-        self.musicflag = False
-        pygame.init()
+        self.state = INIT
+        self.best = 0
         self.sound = True
+        self._factor = 1  # Default: 1 for hard
+
+    def increment_score(self):
+        self.score = self.score + 1
+        self.currentS.set_score(self.score)
+        if self.sound_enable and self.sound:
+            self._snd_pipe.play()
+
+    def load_all(self):
+        self.hit_flag = False
+        self.game_w = GAME_SIZE[0]
+        self.game_h = GAME_SIZE[1]
+        self.floor_y = self.game_h - FLOOR_Y
+        self.bird_x = self.game_w / 3 - FLOOR_Y
+        self.bird_y = self.game_h / 2
+        self.pipe_w = PIPE_W
+        self.build_y = self.floor_y - 229
+        self.mes_x = (self.game_w - MES_W) / 2
+        self.mes_y = (self.game_h - MES_H) / 2
+        self.game_p = self.game_w - DIST - self.pipe_w
+        self.max_s = self.floor_y - MIN_PIPE_H - DIST
+        self.min_pipe_h = MIN_PIPE_H
+        self.end_s_x = (self.game_w - 139) / 2
+        self.sc_x = (self.game_w - 70) / 2
+        self.score = 0
+        self.sprites = pygame.sprite.LayeredUpdates()
+        self.tubes = pygame.sprite.LayeredUpdates()
+        #######################################################################
+        self.background = Background(self, self._factor)
+        self.background.mVel = 0
+        self.floor = Floor(0, self.floor_y, self.game_w)
+        self.floor.mVel = 0
+        self.bird = Bird(self, self._factor, self.bird_x, self.bird_y)
+        self.end_scores = EndScore(self.end_s_x, 200)
+        self.message = Message(self.mes_x, self.mes_y)
+        self.currentS = CurrentScore(self, self.sc_x, 100)
+        #######################################################################
+        self.sprites.add(self.background, layer=-1)
+        self.sprites.add(self.floor, layer=0)
+        self.sprites.add(self.bird, layer=2)
+        self.sprites.add(self.message, layer=3)
+
+    def set_level(self, level):
+        factor = level / 3.0
+        if self._factor != factor:
+            self.best = 0
+        self._factor = factor
+
+    def load_game(self):
+        pipe1 = Pipe_I(self, self.game_w, PIPE_IH, self._factor)
+        pipe2 = Pipe_S(self, self.game_w, self.floor_y - PIPE_IH - DIST,
+                       self._factor)
+        self.sprites.add(pipe1, layer=1)
+        self.sprites.add(pipe2, layer=1)
+        self.tubes.add(pipe1)
+        self.tubes.add(pipe2)
+        self.tubes.add(self.floor)
+        self.sprites.add(self.currentS, layer=3)
+        self.background.mVel = 5 * self._factor
+        self.floor.mVel = -5 * self._factor
+        self.sprites.remove(self.end_scores)
+        self.sprites.remove(self.message)
+
+    def check_collision(self, sprite1, sprite2):
+        x_offset = sprite2.rect.x - sprite1.rect.x
+        y_offset = sprite2.rect.y - sprite1.rect.y
+        offset = (x_offset, y_offset)
+        return sprite1.mask.overlap(sprite2.mask, offset) is not None
+
+    def run(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return
+            elif event.type == pygame.VIDEORESIZE:
+                pygame.display.set_mode(
+                    (event.size[0], event.size[1] - GRID_CELL_SIZE),
+                    pygame.RESIZABLE)
+                break
+        pygame.display.init()
+        pygame.font.init()
+        self.clock = pygame.time.Clock()
+        self.screen = pygame.display.get_surface()
+        if self.screen:
+            w = self.screen.get_width()
+            h = self.screen.get_height()
+            global GAME_SIZE
+            GAME_SIZE = [w, h]
+        else:
+            self.screen = pygame.display.set_mode(GAME_SIZE)
+            pygame.display.set_caption('Flappy')
+        self.sound_enable = True
         try:
             pygame.mixer.init()
-        except Exception as err:
-            self.sound = False
-            print('error with sound', err)
-        self.info = pygame.display.Info()
-        self.gameDisplay = pygame.display.get_surface()
-
-        if not(self.gameDisplay):
-            self.gameDisplay = pygame.display.set_mode(
-                (self.info.current_w, self.info.current_h))
-            pygame.display.set_caption(_("Flappy Birds"))
-
-        self.hit = pygame.mixer.Sound("assets/sounds/hit.ogg")
-        self.point = pygame.mixer.Sound("assets/sounds/point.ogg")
-        self.wing = pygame.mixer.Sound("assets/sounds/wing.ogg")
-        self.swoosh = pygame.mixer.Sound("assets/sounds/swoosh.ogg")
-        self.die = pygame.mixer.Sound("assets/sounds/die.ogg")
-
-        self.font_path = "fonts/Arimo.ttf"
-        self.font_size = 55
-        self.font1 = pygame.font.Font(self.font_path, self.font_size)
-        self.font2 = pygame.font.Font("fonts/Arimo.ttf", 30)
-        self.font3 = pygame.font.Font("fonts/Arimo.ttf", 40)
-        self.font4 = pygame.font.Font("fonts/Arimo.ttf", 23)
-
-        self.background_actual_height = pygame.image.load("assets/sky.png").get_height()
-        self.background_scaled_height = 200
-        # Overlapped image for the combined background should be scaled to 200.
-        self.scaling_factor = self.background_scaled_height / self.background_actual_height
-
-        background = [
-            pygame.image.load("assets/sky3.png").convert(),
-            pygame.image.load("assets/sky2.png").convert(),
-            pygame.image.load("assets/sky1.png").convert_alpha()
-        ]
-        background = list(
-            map(lambda img: pygame.transform.scale(
-                img, (self.width, int(img.get_height() * self.scaling_factor))
-            ), background)
-        )
-
-        # Y coodinates of 3 skies and land respectively.
-        self.y = (
-            400,
-            400 + background[0].get_height(),
-            400 + self.background_scaled_height - background[2].get_height(),
-            400 + self.background_scaled_height,
-        )
-        # Duplicate each image so images can be moved, if one goes out of screen, other covers for it.
-        self.background = [(i, i) for i in background]
-
-        # Load the images for elements
-        load_elements_images()
-        self.birds = bird()
-        self.pillarlist = []
-        a = pillar()
-        self.pillarlist.append(a)
-
-    def make(self):
-        self.initialize()
-        # Variable Initialization
-        black = (0, 0, 0)
-        white = (255, 255, 255)
-        clock = pygame.time.Clock()
-        crashed = False
-
-        # Sound loads
-        self.hit = pygame.mixer.Sound("assets/sounds/hit.ogg")
-        self.point = pygame.mixer.Sound("assets/sounds/point.ogg")
-
-        # image loads
-        land1 = land2 = pygame.transform.scale(pygame.image.load("assets/land.png").convert(), (self.width, 150))
-        skyfill = pygame.transform.scale(pygame.image.load("assets/skyfill.png").convert(), (self.width, 500))
-
-        # GAME LOOP BEGINS !!!
-        while not crashed:
-            # Gtk events
+            self._snd_pipe = pygame.mixer.Sound('data/sounds/pipe.ogg')
+            self._snd_pipe.set_volume(0.5)
+            self._snd_bird = pygame.mixer.Sound('data/sounds/bird.ogg')
+            self._snd_bird.set_volume(0.5)
+            self._snd_hit = pygame.mixer.Sound('data/sounds/hit.ogg')
+            self._snd_hit.set_volume(0.15)
+        except BaseException:
+            self.sound_enable = False
+        self.load_all()
+        self.state = INIT
+        self.running = True
+        while self.running:
             while Gtk.events_pending():
                 Gtk.main_iteration()
             for event in pygame.event.get():
-                # totaltime+=timer.tick()
                 if event.type == pygame.QUIT:
-                    crashed = True
-                if (event.type == pygame.KEYDOWN and event.key == pygame.K_UP or event.type == pygame.MOUSEBUTTONDOWN) and self.keytest == 0:
-                    self.keyinit = self.keytest = 1
-                    if(self.birds.t > 25):
-                        self.birds.angle = 0
-                    self.birds.t = 0
-                if (event.type == pygame.KEYUP and event.key == pygame.K_UP or event.type == pygame.MOUSEBUTTONDOWN) and self.musicflag:
-                    self.keytest = 0
-                    self.musicflag = False
-                if not(self.musicflag) and (event.type == pygame.KEYDOWN and event.key == pygame.K_UP or event.type == pygame.MOUSEBUTTONDOWN):
-                    pygame.mixer.music.load("assets/sounds/wing.ogg")
-                    pygame.mixer.music.play(0, 0)
-                    self.musicflag = True
+                    self.running = False
+                elif event.type == pygame.MOUSEBUTTONDOWN or (
+                        event.type == pygame.KEYDOWN and (
+                        event.key == pygame.K_SPACE or event.key == pygame.K_UP)):
+                    if self.state == INIT:
+                        self.state = PLAY
+                        self.load_game()
+                    elif self.state == PLAY:
+                        self.bird.mVel = INIT_BIRD_SPEED * self._factor ** 0.7
+                        self.bird.counter = 0
+                        if self.sound_enable and self.sound:
+                            self._snd_bird.play()
+                    elif self.state == END:
+                        self.state = INIT
+                        self.load_all()
+                    elif self.state == PAUSE:
+                        self.state = PLAY
+                elif event.type == pygame.KEYDOWN:
+                    if event.key in [pygame.K_p, pygame.K_ESCAPE]:
+                        if self.state == PAUSE:
+                            self.state = PLAY
+                        elif self.state == PLAY:
+                            self.state = PAUSE
 
-            mos_x, mos_y = pygame.mouse.get_pos()
-            if self.welcomeflag == 1:
-                a = welcomescreen(self.gameDisplay)
-                a.run()
-                self.welcomeflag = 0
-                self.keyinit = 1
-
-            self.gameDisplay.fill(white)
-            self.gameDisplay.blit(skyfill, (self.x_start, 0))
-            for i in range(3):
-                self.gameDisplay.blit(self.background[i][0], (self.x1_x2[i][0], self.y[i]))
-                self.gameDisplay.blit(self.background[i][1], (self.x1_x2[i][1], self.y[i]))
-
-            # Pillar Display
-            for i in self.pillarlist:
-                i.display(self.gameDisplay, self.pillarlist, self.birds, self)
-                if(self.welcomeflag == 1):
-                    a = welcomescreen(self.gameDisplay)
-                    a.run()
-                    self.welcomeflag = 0
-                    self.keyinit = 1
-                    break
-
-            # Platform blit
-            # Land 1 (with x coord x1x2[3][0]) and Land 2 (with x coord x1x2[3][1]) are displayed next to each 
-            # other and are moved such that if one goes out of the screen, it is moved to the other side of the 
-            # screen. y[3] contains the height of land.
-            self.gameDisplay.blit(land1, (self.x1_x2[3][0], self.y[3]))
-            self.gameDisplay.blit(land2, (self.x1_x2[3][1], self.y[3]))
-            
-            # Similar logic to move the 3 sky background for parallax effect.
-            for i, speed in enumerate(self.x_speeds):
-                self.x1_x2[i][0] -= speed
-                self.x1_x2[i][1] -= speed
-                if(self.x1_x2[i][0] <= -140):
-                    self.x1_x2[i][0] = 837
-                if(self.x1_x2[i][1] <= -140):
-                    self.x1_x2[i][1] = 837
-
-            if(self.keyinit == 1):
-                self.birds.jump(land1, land2, self.x1_x2[0][0], self.x1_x2[0][1], self)
-            if(self.welcomeflag == 1):
-                a = welcomescreen(self.gameDisplay)
-                a.run()
-                self.welcomeflag = 0
-                self.keyinit = 1
+            if self.state == PAUSE:
                 continue
 
-            # bird display
-            self.birds.display(self.gameDisplay, self.flag)
-            head3 = self.font3.render(str(self.scores), 1, (white))
-            self.gameDisplay.blit(head3, (580, 30))
+            self.sprites.update()
+            self.sprites.draw(self.screen)
 
-            # BLACK RECTANGLES DISPLAY
-            pygame.draw.line(self.gameDisplay, black, (self.x_start, 0), (self.x_start, self.height), 1)
-            pygame.draw.line(self.gameDisplay, black, (self.x_end, 0), (self.x_end, self.height), 1)
-            pygame.draw.rect(self.gameDisplay, black, (0, 0, self.x_start, self.height))
-            pygame.draw.rect(self.gameDisplay, black, (self.x_end, 0, 693, self.height))
-            pygame.display.update()
-            clock.tick(60)
+            col = [sprite for sprite in self.tubes if self.check_collision(
+                self.bird, sprite)]
+            if col != []:
+                if self.sound_enable and self.sound and not self.hit_flag:
+                    self._snd_hit.play()
+                    self.hit_flag = True
+                self.state = END
+                self.floor.mVel = 0
+                self.background.mVel = 0
+                for spr in self.tubes:
+                    spr.mVel = 0
+                if self.score > self.best:
+                    self.best = self.score
+                self.end_scores.update_scores(self.score, self.best)
+                self.sprites.add(self.end_scores, layer=3)
+                self.sprites.draw(self.screen)
 
-            if crashed:                                   # Game crash or Close check
-                pygame.quit()
-                sys.exit()
+            pygame.display.flip()
+            self.clock.tick(FPS)
 
-        # Just a window exception check condition
-        event1 = pygame.event.get()
-        if event1.type == pygame.QUIT:
-            crashed = True
-
-        if crashed:
-            pygame.quit()
-            sys.exit()
 
 if __name__ == "__main__":
-    g = game()
-    g.make()
+    g = Flappy()
+    GAME_SIZE = (400, 900)
+    g.screen = pygame.display.set_mode(GAME_SIZE)
+    g.run()
