@@ -1,10 +1,8 @@
 [Activity]
-name = Flappy Birds
-activity_version = 4
-bundle_id = org.sugarlabs.flappy
+name = Flappy
+activity_version = 5
+bundle_id = org.ceibaljam.flappy
 icon = flappy
 exec = sugar-activity3 activity.Activity
-license = GPLv3+;GPLv2+
-summary = An arcade game.
-repository = https://github.com/sugarlabs/flappy-birds-activity.git
-tags = Game
+license = GPLv3+
+summary = The popular Flappy bird game

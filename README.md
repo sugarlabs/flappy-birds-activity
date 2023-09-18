@@ -1,9 +1,9 @@
 What is this?
 =============
 
-Flappy Birds is an arcade game for the Sugar desktop.
+Flappy is an arcade game for the Sugar desktop.
 
-![Screenshot](screenshots/2.png)
+![Screenshot](screenshots/flappy.png)
 
 How to use?
 ===========
@@ -12,7 +12,7 @@ Flappy Birds is not part of the Sugar desktop, but can be added.  Please refer t
 
 * [How to Get Sugar on sugarlabs.org](https://sugarlabs.org/),
 * [How to use Sugar](https://help.sugarlabs.org/),
-* [Download Flappy Birds using Browse](https://activities.sugarlabs.org/), search for `Flappy Birds`, then download, and;
+* [Download Flappy using Browse](https://v4.activities.sugarlabs.org/), search for `Flappy`, then download, and;
 * Refer the 'How to play' section inside the activity
 
 How to upgrade?
@@ -20,19 +20,19 @@ How to upgrade?
 
 On Sugar desktop systems;
 * use [My Settings](https://help.sugarlabs.org/my_settings.html), [Software Update](https://help.sugarlabs.org/my_settings.html#software-update), or;
-* use Browse to open [activities.sugarlabs.org](https://activities.sugarlabs.org/), search for `Flappy Birds`, then download.
+* use Browse to open [v4.activities.sugarlabs.org](https://v4.activities.sugarlabs.org/), search for `Flappy`, then download.
 
 How to run?
 =================
 
-Flappy Birds depends on Python, PyGTK and PyGame.
+Flappy depends on Python, PyGTK and PyGame.
 
-Flappy Birds is started by [Sugar](https://github.com/sugarlabs/sugar).
+Flappy is started by [Sugar](https://github.com/sugarlabs/sugar).
 
-Flappy Birds is not packaged by Debian, Ubuntu and Fedora distributions.  
-On Ubuntu and Debian systems these required dependencies (`python-gtk2-dev` and
-`python-pygame`) need to be manually installed.
-On Fedora system these dependencies (`pygtk2` and `pygame`) need to be manually installed.
+Flappy is not packaged by Debian, Ubuntu and Fedora distributions.  
+On Ubuntu and Debian systems these required dependencies (`gir1.2-gtk-3.0` and
+`python3-pygame-sdl2`) need to be manually installed.
+On Fedora system these dependencies (`gtk3` and `python3-pygame`) need to be manually installed.
 
 
 **Running outside Sugar**
@@ -43,29 +43,35 @@ On Fedora system these dependencies (`pygtk2` and `pygame`) need to be manually 
 On Debian and Ubuntu systems;
 
 ```
-sudo apt install python-gtk2-dev python-pygame
+sudo apt install gir1.2-gtk-3.0 python3-pygame-sdl2
 ```
 
 On Fedora systems;
 
 ```
-sudo dnf install pygtk2 pygame
+sudo dnf install gtk3 python3-pygame
 ```
 
 - Clone the repo and run-
 ```
-git clone https://github.com/sugarlabs/flappy-birds-activity.git
-cd flappy-birds-activity
-python main.py
+git clone https://github.com/sugarlabs/flappy.git
+cd flappy
+python3 main.py
 ```
 
 **Running inside Sugar**
 
-- Open Terminal activity and change to the Flappy Birds activity directory
+- Activity can be run from the activity ring, you'll open
+  terminal activity and change to the flappy activity directory
 ```
-cd activities\FlappyBirds.activity
+cd Activities/flappy
+# Set up activity for development 
+python3 setup.py dev
 ```
-- To run
+- Go to activity ring and search for flappy and run.
+
+- Activity can also be run from the terminal by running while in
+  activity directory
 ```
-sugar-activity .
+sugar-activity3 .
 ```
